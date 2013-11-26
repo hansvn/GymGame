@@ -36,7 +36,7 @@ namespace GymGame.Models
         /**
          * --------------------------------------SELECT------------------------------------------*
          * select query's:
-         ** !!!!!!!!!!!!!!!!!! joins doen, anders komen er enkel enkele integers terug !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!** 
+         ** !!!!!!!!!!!!!!!!!! joins doen, anders komen er enkel enkele integers terug !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ** 
          **/
 
         public List<Result> getAll()
@@ -76,6 +76,22 @@ namespace GymGame.Models
                           where r.FK_Quiz == q.Quiz_Id && r.FK_User == u.User_Id
                           select r).ToList<Result>();
             return result;
+        }
+
+        public int getRightAnswersByQuiz(Quiz q)
+        {
+            var result = (from r in dc.Results
+                          join a in dc.Answers on r.FK_Answer equals a.Answer_Id
+                          where r.FK_Quiz == q.Quiz_Id
+                          select r).ToList();
+
+            //tel de rijen met een goed antwoord.
+            foreach (var el in result)
+            {
+                if (el.Answer.Answer_value == 1) result.Remove(el);
+            }
+            return result.Count;
+
         }
 
 
