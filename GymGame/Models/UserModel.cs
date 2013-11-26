@@ -12,18 +12,26 @@ namespace GymGame.Models
 
         private GymGameModelDataContext dc = new GymGameModelDataContext();
 
-        public Boolean SaveUser(User u)
+        public User SaveUser(User u)
         {
             dc.Users.InsertOnSubmit(u);
             dc.SubmitChanges();
             
-            return u.Id;
+            return u;
         }
 
         public List<User> getAllUsers()
         {
             var result = (from u in dc.Users
                           select u).ToList<User>();
+            return result;
+        }
+
+        public User logIn(int fbId)
+        {
+            var result = (from u in dc.Users
+                          where u.FB_UserId == fbId
+                          select u).Single();
             return result;
         }
     }
