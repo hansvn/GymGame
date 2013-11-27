@@ -14,6 +14,10 @@ namespace GymGame.Models
 
         public User SaveUser(User u)
         {
+            if (u == null)
+            {
+                throw new Exception("User must be given...");
+            }
             dc.Users.InsertOnSubmit(u);
             dc.SubmitChanges();
             
@@ -29,6 +33,10 @@ namespace GymGame.Models
 
         public User logIn(int fbId)
         {
+            if (fbId == null)
+            {
+                throw new Exception("Facebook ID must be given...");
+            }
             var result = (from u in dc.Users
                           where u.FB_UserId == fbId
                           select u).Single();

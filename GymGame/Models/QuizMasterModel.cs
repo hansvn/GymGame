@@ -211,7 +211,7 @@ namespace GymGame.Models
          ** joins worden nog niet gedaan... gewoon elke functie in volgorde oproepen werkt ook... ** 
          **/
 
-        public List<Quiz> getAllQuizzesByUser(User u)
+        public List<Quiz> getAllQuizzes(User u)
         {
             if (u == null)
             {
