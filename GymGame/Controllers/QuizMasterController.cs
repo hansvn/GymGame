@@ -6,6 +6,9 @@ using System.Web.Mvc;
 
 namespace GymGame.Controllers
 {
+    
+
+
     public class QuizMasterController : Controller
     {
         // This controller will handle backend features for administrators.
@@ -17,12 +20,27 @@ namespace GymGame.Controllers
             return View();
         }
 
-        public ActionResult New()
+        [HttpPost]
+        public ActionResult New(FormCollection f)
         {
+            string namegame = f["naam"];
             return View();
         }
 
         public ActionResult Manage()
+        {
+     
+            return View();
+        }
+
+        public ActionResult Edit(int id)
+        {
+
+            ViewBag.questions = "";
+            return View();
+        }
+
+        public ActionResult Start()
         {
             return View();
         }
