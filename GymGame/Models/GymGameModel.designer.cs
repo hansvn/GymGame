@@ -726,7 +726,7 @@ namespace GymGame.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Quiz", Storage="_User", ThisKey="FK_Users", OtherKey="User_Id", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User1_Quiz", Storage="_User", ThisKey="FK_Users", OtherKey="User_Id", IsForeignKey=true)]
 		public User User
 		{
 			get
@@ -1072,7 +1072,7 @@ namespace GymGame.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Result", Storage="_User", ThisKey="FK_User", OtherKey="User_Id", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User1_Result", Storage="_User", ThisKey="FK_User", OtherKey="User_Id", IsForeignKey=true)]
 		public User User
 		{
 			get
@@ -1219,7 +1219,7 @@ namespace GymGame.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Role_User", Storage="_Users", ThisKey="Role_Id", OtherKey="FK_Role")]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Role_User1", Storage="_Users", ThisKey="Role_Id", OtherKey="FK_Role")]
 		public EntitySet<User> Users
 		{
 			get
@@ -1482,7 +1482,7 @@ namespace GymGame.Models
 		
 		private int _FK_Role;
 		
-		private System.Nullable<int> _FB_UserId;
+		private string _FB_UserId;
 		
 		private EntitySet<Quiz> _Quizs;
 		
@@ -1502,7 +1502,7 @@ namespace GymGame.Models
     partial void OnLastnameChanged();
     partial void OnFK_RoleChanging(int value);
     partial void OnFK_RoleChanged();
-    partial void OnFB_UserIdChanging(System.Nullable<int> value);
+    partial void OnFB_UserIdChanging(string value);
     partial void OnFB_UserIdChanged();
     #endregion
 		
@@ -1598,8 +1598,8 @@ namespace GymGame.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FB_UserId", DbType="Int")]
-		public System.Nullable<int> FB_UserId
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FB_UserId", DbType="VarChar(64)")]
+		public string FB_UserId
 		{
 			get
 			{
@@ -1618,7 +1618,7 @@ namespace GymGame.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Quiz", Storage="_Quizs", ThisKey="User_Id", OtherKey="FK_Users")]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User1_Quiz", Storage="_Quizs", ThisKey="User_Id", OtherKey="FK_Users")]
 		public EntitySet<Quiz> Quizs
 		{
 			get
@@ -1631,7 +1631,7 @@ namespace GymGame.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Result", Storage="_Results", ThisKey="User_Id", OtherKey="FK_User")]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User1_Result", Storage="_Results", ThisKey="User_Id", OtherKey="FK_User")]
 		public EntitySet<Result> Results
 		{
 			get
@@ -1644,7 +1644,7 @@ namespace GymGame.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Role_User", Storage="_Role", ThisKey="FK_Role", OtherKey="Role_Id", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Role_User1", Storage="_Role", ThisKey="FK_Role", OtherKey="Role_Id", IsForeignKey=true)]
 		public Role Role
 		{
 			get

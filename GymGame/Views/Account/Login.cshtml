@@ -11,13 +11,13 @@
 </head>
 <body>
     <div>
-@{ if(ViewBag.status != "loggedIn")
+@{ if(ViewBag.status != "loggedIn" && ViewBag.status != "error")
    {
         <div id="fb-root"></div>
 <script>
     window.fbAsyncInit = function () {
         FB.init({
-            appId: '395097243954782', // App ID
+            appId: '413686648759601', // App ID
             status: true, // check login status
             cookie: true, // enable cookies to allow the server to access the session
             xfbml: true  // parse XFBML
@@ -37,7 +37,7 @@
                 // This is a form post since we don't want to use AJAX
                 var form = document.createElement("form");
                 form.setAttribute("method", 'post');
-                form.setAttribute("action", '');
+                form.setAttribute("action", 'login');
 
                 var field = document.createElement("input");
                 field.setAttribute("type", "hidden");
@@ -69,6 +69,10 @@
         <div>
             <div class="fb-login-button" data-show-faces="true" data-width="400" data-max-rows="1"></div>
         </div>
+}
+else if (ViewBag.status == "error")
+{
+       <p>There was an error while logging in...</p>
 }
 else {
        <p>You are logged in :)</p>

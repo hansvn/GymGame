@@ -69,7 +69,7 @@
       <Column Name="Firstname" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
       <Column Name="Lastname" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="FK_Role" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="FB_UserId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FB_UserId" Type="System.String" DbType="VarChar(64)" CanBeNull="true" />
       <Association Name="User1_Quiz" Member="Quizs" ThisKey="User_Id" OtherKey="FK_Users" Type="Quiz" />
       <Association Name="User1_Result" Member="Results" ThisKey="User_Id" OtherKey="FK_User" Type="Result" />
       <Association Name="Role_User1" Member="Role" ThisKey="FK_Role" OtherKey="Role_Id" Type="Role" IsForeignKey="true" />
