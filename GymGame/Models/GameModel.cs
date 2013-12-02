@@ -110,6 +110,18 @@ namespace GymGame.Models
             return (Quiz)result;
         }
 
+        public Quiz getQuizByName(Quiz quiz)
+        {
+            if (quiz == null)
+            {
+                throw new Exception("User must be given...");
+            }
+            var result = (from q in dc.Quizs
+                          where q.name == quiz.name
+                          select q).Single();
+            return (Quiz)result;
+        }
+
         public List<Round> getAllRounds(Quiz q)
         {
             if (q == null)
@@ -186,6 +198,11 @@ namespace GymGame.Models
         public PlayableQuiz getPlayableQuiz(int quizId)
         {
             return new PlayableQuiz(quizId);
+        }
+
+        public PlayableQuiz getPlayableQuizByName(String quizName)
+        {
+            return new PlayableQuiz(quizName);
         }
 
 
