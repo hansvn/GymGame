@@ -4,14 +4,15 @@
 }
 
 <h2>Beheer Games</h2>
-<form action="~/Views/QuizMaster/Edit" method="get">
+
 <ul>
-   
-    <li>@ViewBag.allgames
-       <button type="submit" class="btn btn-default" onclick="">aanpassen</button>
-       <button type="submit" class="btn btn-default">Verwijderen</button>
+   @foreach (var l in ViewBag.quizzes)
+   { 
+    <li>Quiz nr. @l.Quiz_Id @l.Location @l.Date 
+       <input type="hidden" name="@l.Quiz_Id" />
+        <a href="~/Quizmaster/Edit/@l.Quiz_Id">Aanpassen</a>
+        <a href="~/Quizmaster/Delete/@l.Quiz_Id">Verwijder</a>
     </li>
-   
+   }
 
 </ul>
-    </form>
