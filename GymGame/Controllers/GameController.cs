@@ -15,13 +15,15 @@ namespace GymGame.Controllers
 
         public ActionResult Index(String Id)
         {
-            
+
+            //UserModel user = new UserModel();
 
             // Op basis van wat er werd ingegeven achter Game/... wordt er een bepaalde quiz geselecteerd.
             // checken of de gebruiker al is ingelogd. Indien niet -> /login -> 
+
             ViewBag.id = Id;
             // is er een user sessie? En wie is de gebruiker?
-            ViewBag.username = "Willy"; // test Willy hardcoded.
+            ViewBag.sessionname = Session["userId"] = "Willy"; // test Willy hardcoded.
             //test for playable quizzes... ----**!
             GameModel gm = new GameModel();
             PlayableQuiz playQuiz =  gm.getPlayableQuiz(1);

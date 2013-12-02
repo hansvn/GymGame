@@ -3,7 +3,12 @@
 }
 
 <h2>Game Home</h2>
-<h3>Hello, @ViewBag.username</h3>
+<h3>Hello, 
+    @{ if (@HttpContext.Current.Session["firstname"] != null) 
+       {@HttpContext.Current.Session["firstname"].ToString()}
+                                                            else{
+       <p>you are not logged in</p>}                                                     
+                                                            }</h3>
 <h3> Begin spel: @ViewBag.id</h3>
 
 <!-- ajaxcall om eerste vraag op te halen -->

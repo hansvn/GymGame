@@ -1,17 +1,19 @@
-﻿@{
+﻿@model GymGame.Models.QuizMasterModel
+@{
     ViewBag.Title = "Edit";
     Layout = "~/Views/QuizMaster/_LayoutQuizMaster.cshtml";
 }
 
+
 <h2>Edit Game</h2>
 <form class="" role="form">
   <div class="form-group">
-    <label class="" for="">Naam van het spel</label>
-    <input type="text" class="form-control" id="gameName" placeholder="Naam van het nieuwe spel">
+    <label class="" for="">Naam</label>
+    <input type="text" class="form-control" id="gameName" value="@ViewBag.name">
   </div>
     <hr />
   <div class="form-group">
-    <label class="sr-only" for="">Vraag # </label>
+    <label class="sr-only" for="">@Model.name</label>
     <input type="text" class="form-control" id="" placeholder="Vraag #">
   </div>
     

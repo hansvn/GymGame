@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using GymGame.Models;
+using GymGame.Classes;
 
 namespace GymGame.Controllers
 {
@@ -57,20 +58,27 @@ namespace GymGame.Controllers
         }
 
 
-        
-
-        [HttpPost]
         public ActionResult Edit(String quiz_Id)
         {
             // alle velden van een bepaalde quiz opvragen.
             // en de velden hiermee vullen.
-            var Quiz = new Quiz { Location = "IMDEVENT" + quiz_Id };
-            return View(Quiz);
+            //**** TO DO //
+            // hard coded omdat hij de waarde niet uit de url krijg
+            //PlayableQuiz plquiz = new PlayableQuiz(int.Parse(quiz_Id));
+           
+            
+            var hardId = 1;
+            PlayableQuiz plquiz = new PlayableQuiz(hardId);
+            ViewBag.name = plquiz.quiz.name;
+          
+            return View(plquiz);
         }
 
+        // later uitwerken.
         public String Delete(String quiz_Id)
         {
-            // uit datadank verwijderen, maar hoe?
+            // uit datadank verwijderen, maar hoe? nog te voorzien.
+           
             return quiz_Id + " uit de databank verwijderd" + "<a href='/Quizmaster/manage'> terug </a>";
         }
 
