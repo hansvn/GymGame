@@ -85,6 +85,7 @@ namespace GymGame.Controllers
             Session["lastname"] = u.Lastname;
             Session["fbUserId"] = result.id;
             Session["userId"] = u.User_Id;
+            Session["fbUserId"] = result.id;
             ViewBag.status = "loggedIn";
 
             return View();

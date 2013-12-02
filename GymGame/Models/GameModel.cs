@@ -114,7 +114,7 @@ namespace GymGame.Models
         {
             if (quiz == null)
             {
-                throw new Exception("User must be given...");
+                throw new Exception("Quiz must be given...");
             }
             var result = (from q in dc.Quizs
                           where q.name == quiz.name
@@ -197,11 +197,19 @@ namespace GymGame.Models
 
         public PlayableQuiz getPlayableQuiz(int quizId)
         {
+            if (quizId == null)
+            {
+                throw new Exception("Quiz must be given...");
+            }
             return new PlayableQuiz(quizId);
         }
 
         public PlayableQuiz getPlayableQuizByName(String quizName)
         {
+            if (quizName == null)
+            {
+                throw new Exception("Quiz name must be given...");
+            }
             return new PlayableQuiz(quizName);
         }
 

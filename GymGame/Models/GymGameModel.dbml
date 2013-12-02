@@ -54,18 +54,6 @@
       <Association Name="Role_User" Member="Role" ThisKey="FK_Role" OtherKey="Role_Id" Type="Role" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.Quizzes" Member="Quizs">
-    <Type Name="Quiz">
-      <Column Name="Quiz_Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="FK_Users" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Location" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="Date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Association Name="Quizze_Result" Member="Results" ThisKey="Quiz_Id" OtherKey="FK_Quiz" Type="Result" />
-      <Association Name="Quiz_Round" Member="Rounds" ThisKey="Quiz_Id" OtherKey="FK_Quiz" Type="Round" />
-      <Association Name="User_Quizze" Member="User" ThisKey="FK_Users" OtherKey="User_Id" Type="User" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.Rounds" Member="Rounds">
     <Type Name="Round">
       <Column Name="Round_Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -74,7 +62,21 @@
       <Column Name="Round_name" Type="System.String" DbType="VarChar(11) NOT NULL" CanBeNull="false" />
       <Column Name="Round_started" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Association Name="Round_Question" Member="Questions" ThisKey="Round_Id" OtherKey="FK_Round" Type="Question" />
-      <Association Name="Quiz_Round" Member="Quiz" ThisKey="FK_Quiz" OtherKey="Quiz_Id" Type="Quiz" IsForeignKey="true" />
+      <Association Name="Quizze_Round" Member="Quiz" ThisKey="FK_Quiz" OtherKey="Quiz_Id" Type="Quiz" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Quizzes" Member="Quizs">
+    <Type Name="Quiz">
+      <Column Name="Quiz_Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FK_Users" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Location" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="code" Type="System.String" DbType="VarChar(32) NOT NULL" CanBeNull="false" />
+      <Column Name="active" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Association Name="Quizze_Result" Member="Results" ThisKey="Quiz_Id" OtherKey="FK_Quiz" Type="Result" />
+      <Association Name="Quizze_Round" Member="Rounds" ThisKey="Quiz_Id" OtherKey="FK_Quiz" Type="Round" />
+      <Association Name="User_Quizze" Member="User" ThisKey="FK_Users" OtherKey="User_Id" Type="User" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

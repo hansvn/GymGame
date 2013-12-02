@@ -168,6 +168,7 @@
     <Content Include="Views\QuizMaster\Edit.cshtml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Views\Account\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Models\GymGameModel.dbml">
