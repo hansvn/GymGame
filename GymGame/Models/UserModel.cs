@@ -65,6 +65,19 @@ namespace GymGame.Models
 
             return value;
         }
+
+        public User getUser(int? userId)
+        {
+            if (userId == null)
+            {
+                throw new Exception("User ID must be given...");
+            }
+            var result = (from u in dc.Users
+                          where u.User_Id == userId
+                          select u).Single();
+            //check if username has changed:
+            return result;
+        }
     }
 }
 

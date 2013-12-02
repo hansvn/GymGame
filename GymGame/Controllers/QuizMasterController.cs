@@ -39,7 +39,7 @@ namespace GymGame.Controllers
 
 
             //  Quiz q = new Quiz();
-
+            User u = new User();
             return View();
         }
 

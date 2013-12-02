@@ -8,8 +8,8 @@ namespace GymGame.Classes
 {
     public class PlayableQuiz
     {
-        Quiz quiz = new Quiz();
-        List<PlayableRound> playableRounds = new List<PlayableRound>();
+        public Quiz quiz = new Quiz();
+        public List<PlayableRound> playableRounds = new List<PlayableRound>();
         GameModel gm = new GameModel();
 
         //constructor
