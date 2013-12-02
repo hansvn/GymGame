@@ -13,6 +13,8 @@ namespace GymGame.Controllers
 
         public ActionResult Index(String Id)
         {
+            
+
             // Op basis van wat er werd ingegeven achter Game/... wordt er een bepaalde quiz geselecteerd.
             // checken of de gebruiker al is ingelogd. Indien niet -> /login -> 
             ViewBag.id = Id;
