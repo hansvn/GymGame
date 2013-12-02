@@ -36,21 +36,21 @@ namespace GymGame.Models
     partial void InsertQuestion(Question instance);
     partial void UpdateQuestion(Question instance);
     partial void DeleteQuestion(Question instance);
-    partial void InsertQuiz(Quiz instance);
-    partial void UpdateQuiz(Quiz instance);
-    partial void DeleteQuiz(Quiz instance);
     partial void InsertResult(Result instance);
     partial void UpdateResult(Result instance);
     partial void DeleteResult(Result instance);
     partial void InsertRole(Role instance);
     partial void UpdateRole(Role instance);
     partial void DeleteRole(Role instance);
-    partial void InsertRound(Round instance);
-    partial void UpdateRound(Round instance);
-    partial void DeleteRound(Round instance);
     partial void InsertUser(User instance);
     partial void UpdateUser(User instance);
     partial void DeleteUser(User instance);
+    partial void InsertQuiz(Quiz instance);
+    partial void UpdateQuiz(Quiz instance);
+    partial void DeleteQuiz(Quiz instance);
+    partial void InsertRound(Round instance);
+    partial void UpdateRound(Round instance);
+    partial void DeleteRound(Round instance);
     #endregion
 		
 		public GymGameModelDataContext() : 
@@ -99,14 +99,6 @@ namespace GymGame.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Quiz> Quizs
-		{
-			get
-			{
-				return this.GetTable<Quiz>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Result> Results
 		{
 			get
@@ -123,19 +115,27 @@ namespace GymGame.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Round> Rounds
-		{
-			get
-			{
-				return this.GetTable<Round>();
-			}
-		}
-		
 		public System.Data.Linq.Table<User> Users
 		{
 			get
 			{
 				return this.GetTable<User>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Quiz> Quizs
+		{
+			get
+			{
+				return this.GetTable<Quiz>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Round> Rounds
+		{
+			get
+			{
+				return this.GetTable<Round>();
 			}
 		}
 	}
@@ -574,237 +574,6 @@ namespace GymGame.Models
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Quizzes")]
-	public partial class Quiz : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Quiz_Id;
-		
-		private int _FK_Users;
-		
-		private string _Location;
-		
-		private System.DateTime _Date;
-		
-		private EntitySet<Result> _Results;
-		
-		private EntitySet<Round> _Rounds;
-		
-		private EntityRef<User> _User;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnQuiz_IdChanging(int value);
-    partial void OnQuiz_IdChanged();
-    partial void OnFK_UsersChanging(int value);
-    partial void OnFK_UsersChanged();
-    partial void OnLocationChanging(string value);
-    partial void OnLocationChanged();
-    partial void OnDateChanging(System.DateTime value);
-    partial void OnDateChanged();
-    #endregion
-		
-		public Quiz()
-		{
-			this._Results = new EntitySet<Result>(new Action<Result>(this.attach_Results), new Action<Result>(this.detach_Results));
-			this._Rounds = new EntitySet<Round>(new Action<Round>(this.attach_Rounds), new Action<Round>(this.detach_Rounds));
-			this._User = default(EntityRef<User>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Quiz_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Quiz_Id
-		{
-			get
-			{
-				return this._Quiz_Id;
-			}
-			set
-			{
-				if ((this._Quiz_Id != value))
-				{
-					this.OnQuiz_IdChanging(value);
-					this.SendPropertyChanging();
-					this._Quiz_Id = value;
-					this.SendPropertyChanged("Quiz_Id");
-					this.OnQuiz_IdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FK_Users", DbType="Int NOT NULL")]
-		public int FK_Users
-		{
-			get
-			{
-				return this._FK_Users;
-			}
-			set
-			{
-				if ((this._FK_Users != value))
-				{
-					if (this._User.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnFK_UsersChanging(value);
-					this.SendPropertyChanging();
-					this._FK_Users = value;
-					this.SendPropertyChanged("FK_Users");
-					this.OnFK_UsersChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Location", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string Location
-		{
-			get
-			{
-				return this._Location;
-			}
-			set
-			{
-				if ((this._Location != value))
-				{
-					this.OnLocationChanging(value);
-					this.SendPropertyChanging();
-					this._Location = value;
-					this.SendPropertyChanged("Location");
-					this.OnLocationChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date", DbType="DateTime NOT NULL")]
-		public System.DateTime Date
-		{
-			get
-			{
-				return this._Date;
-			}
-			set
-			{
-				if ((this._Date != value))
-				{
-					this.OnDateChanging(value);
-					this.SendPropertyChanging();
-					this._Date = value;
-					this.SendPropertyChanged("Date");
-					this.OnDateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Quiz_Result", Storage="_Results", ThisKey="Quiz_Id", OtherKey="FK_Quiz")]
-		public EntitySet<Result> Results
-		{
-			get
-			{
-				return this._Results;
-			}
-			set
-			{
-				this._Results.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Quiz_Round", Storage="_Rounds", ThisKey="Quiz_Id", OtherKey="FK_Quiz")]
-		public EntitySet<Round> Rounds
-		{
-			get
-			{
-				return this._Rounds;
-			}
-			set
-			{
-				this._Rounds.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Quiz", Storage="_User", ThisKey="FK_Users", OtherKey="User_Id", IsForeignKey=true)]
-		public User User
-		{
-			get
-			{
-				return this._User.Entity;
-			}
-			set
-			{
-				User previousValue = this._User.Entity;
-				if (((previousValue != value) 
-							|| (this._User.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._User.Entity = null;
-						previousValue.Quizs.Remove(this);
-					}
-					this._User.Entity = value;
-					if ((value != null))
-					{
-						value.Quizs.Add(this);
-						this._FK_Users = value.User_Id;
-					}
-					else
-					{
-						this._FK_Users = default(int);
-					}
-					this.SendPropertyChanged("User");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_Results(Result entity)
-		{
-			this.SendPropertyChanging();
-			entity.Quiz = this;
-		}
-		
-		private void detach_Results(Result entity)
-		{
-			this.SendPropertyChanging();
-			entity.Quiz = null;
-		}
-		
-		private void attach_Rounds(Round entity)
-		{
-			this.SendPropertyChanging();
-			entity.Quiz = this;
-		}
-		
-		private void detach_Rounds(Round entity)
-		{
-			this.SendPropertyChanging();
-			entity.Quiz = null;
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Results")]
 	public partial class Result : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -825,9 +594,9 @@ namespace GymGame.Models
 		
 		private EntityRef<Question> _Question;
 		
-		private EntityRef<Quiz> _Quiz;
-		
 		private EntityRef<User> _User;
+		
+		private EntityRef<Quiz> _Quiz;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -849,8 +618,8 @@ namespace GymGame.Models
 		{
 			this._Answer = default(EntityRef<Answer>);
 			this._Question = default(EntityRef<Question>);
-			this._Quiz = default(EntityRef<Quiz>);
 			this._User = default(EntityRef<User>);
+			this._Quiz = default(EntityRef<Quiz>);
 			OnCreated();
 		}
 		
@@ -1038,40 +807,6 @@ namespace GymGame.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Quiz_Result", Storage="_Quiz", ThisKey="FK_Quiz", OtherKey="Quiz_Id", IsForeignKey=true)]
-		public Quiz Quiz
-		{
-			get
-			{
-				return this._Quiz.Entity;
-			}
-			set
-			{
-				Quiz previousValue = this._Quiz.Entity;
-				if (((previousValue != value) 
-							|| (this._Quiz.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Quiz.Entity = null;
-						previousValue.Results.Remove(this);
-					}
-					this._Quiz.Entity = value;
-					if ((value != null))
-					{
-						value.Results.Add(this);
-						this._FK_Quiz = value.Quiz_Id;
-					}
-					else
-					{
-						this._FK_Quiz = default(int);
-					}
-					this.SendPropertyChanged("Quiz");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Result", Storage="_User", ThisKey="FK_User", OtherKey="User_Id", IsForeignKey=true)]
 		public User User
 		{
@@ -1102,6 +837,40 @@ namespace GymGame.Models
 						this._FK_User = default(int);
 					}
 					this.SendPropertyChanged("User");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Quizze_Result", Storage="_Quiz", ThisKey="FK_Quiz", OtherKey="Quiz_Id", IsForeignKey=true)]
+		public Quiz Quiz
+		{
+			get
+			{
+				return this._Quiz.Entity;
+			}
+			set
+			{
+				Quiz previousValue = this._Quiz.Entity;
+				if (((previousValue != value) 
+							|| (this._Quiz.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Quiz.Entity = null;
+						previousValue.Results.Remove(this);
+					}
+					this._Quiz.Entity = value;
+					if ((value != null))
+					{
+						value.Results.Add(this);
+						this._FK_Quiz = value.Quiz_Id;
+					}
+					else
+					{
+						this._FK_Quiz = default(int);
+					}
+					this.SendPropertyChanged("Quiz");
 				}
 			}
 		}
@@ -1265,6 +1034,516 @@ namespace GymGame.Models
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Users")]
+	public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _User_Id;
+		
+		private string _Firstname;
+		
+		private string _Lastname;
+		
+		private int _FK_Role;
+		
+		private string _FB_UserId;
+		
+		private EntitySet<Result> _Results;
+		
+		private EntitySet<Quiz> _Quizs;
+		
+		private EntityRef<Role> _Role;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnUser_IdChanging(int value);
+    partial void OnUser_IdChanged();
+    partial void OnFirstnameChanging(string value);
+    partial void OnFirstnameChanged();
+    partial void OnLastnameChanging(string value);
+    partial void OnLastnameChanged();
+    partial void OnFK_RoleChanging(int value);
+    partial void OnFK_RoleChanged();
+    partial void OnFB_UserIdChanging(string value);
+    partial void OnFB_UserIdChanged();
+    #endregion
+		
+		public User()
+		{
+			this._Results = new EntitySet<Result>(new Action<Result>(this.attach_Results), new Action<Result>(this.detach_Results));
+			this._Quizs = new EntitySet<Quiz>(new Action<Quiz>(this.attach_Quizs), new Action<Quiz>(this.detach_Quizs));
+			this._Role = default(EntityRef<Role>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_User_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int User_Id
+		{
+			get
+			{
+				return this._User_Id;
+			}
+			set
+			{
+				if ((this._User_Id != value))
+				{
+					this.OnUser_IdChanging(value);
+					this.SendPropertyChanging();
+					this._User_Id = value;
+					this.SendPropertyChanged("User_Id");
+					this.OnUser_IdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Firstname", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
+		public string Firstname
+		{
+			get
+			{
+				return this._Firstname;
+			}
+			set
+			{
+				if ((this._Firstname != value))
+				{
+					this.OnFirstnameChanging(value);
+					this.SendPropertyChanging();
+					this._Firstname = value;
+					this.SendPropertyChanged("Firstname");
+					this.OnFirstnameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Lastname", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string Lastname
+		{
+			get
+			{
+				return this._Lastname;
+			}
+			set
+			{
+				if ((this._Lastname != value))
+				{
+					this.OnLastnameChanging(value);
+					this.SendPropertyChanging();
+					this._Lastname = value;
+					this.SendPropertyChanged("Lastname");
+					this.OnLastnameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FK_Role", DbType="Int NOT NULL")]
+		public int FK_Role
+		{
+			get
+			{
+				return this._FK_Role;
+			}
+			set
+			{
+				if ((this._FK_Role != value))
+				{
+					if (this._Role.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnFK_RoleChanging(value);
+					this.SendPropertyChanging();
+					this._FK_Role = value;
+					this.SendPropertyChanged("FK_Role");
+					this.OnFK_RoleChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FB_UserId", DbType="VarChar(64)")]
+		public string FB_UserId
+		{
+			get
+			{
+				return this._FB_UserId;
+			}
+			set
+			{
+				if ((this._FB_UserId != value))
+				{
+					this.OnFB_UserIdChanging(value);
+					this.SendPropertyChanging();
+					this._FB_UserId = value;
+					this.SendPropertyChanged("FB_UserId");
+					this.OnFB_UserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Result", Storage="_Results", ThisKey="User_Id", OtherKey="FK_User")]
+		public EntitySet<Result> Results
+		{
+			get
+			{
+				return this._Results;
+			}
+			set
+			{
+				this._Results.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Quizze", Storage="_Quizs", ThisKey="User_Id", OtherKey="FK_Users")]
+		public EntitySet<Quiz> Quizs
+		{
+			get
+			{
+				return this._Quizs;
+			}
+			set
+			{
+				this._Quizs.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Role_User", Storage="_Role", ThisKey="FK_Role", OtherKey="Role_Id", IsForeignKey=true)]
+		public Role Role
+		{
+			get
+			{
+				return this._Role.Entity;
+			}
+			set
+			{
+				Role previousValue = this._Role.Entity;
+				if (((previousValue != value) 
+							|| (this._Role.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Role.Entity = null;
+						previousValue.Users.Remove(this);
+					}
+					this._Role.Entity = value;
+					if ((value != null))
+					{
+						value.Users.Add(this);
+						this._FK_Role = value.Role_Id;
+					}
+					else
+					{
+						this._FK_Role = default(int);
+					}
+					this.SendPropertyChanged("Role");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Results(Result entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+		
+		private void detach_Results(Result entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+		
+		private void attach_Quizs(Quiz entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+		
+		private void detach_Quizs(Quiz entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Quizzes")]
+	public partial class Quiz : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Quiz_Id;
+		
+		private int _FK_Users;
+		
+		private string _Location;
+		
+		private System.DateTime _Date;
+		
+		private string _name;
+		
+		private EntitySet<Result> _Results;
+		
+		private EntitySet<Round> _Rounds;
+		
+		private EntityRef<User> _User;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnQuiz_IdChanging(int value);
+    partial void OnQuiz_IdChanged();
+    partial void OnFK_UsersChanging(int value);
+    partial void OnFK_UsersChanged();
+    partial void OnLocationChanging(string value);
+    partial void OnLocationChanged();
+    partial void OnDateChanging(System.DateTime value);
+    partial void OnDateChanged();
+    partial void OnnameChanging(string value);
+    partial void OnnameChanged();
+    #endregion
+		
+		public Quiz()
+		{
+			this._Results = new EntitySet<Result>(new Action<Result>(this.attach_Results), new Action<Result>(this.detach_Results));
+			this._Rounds = new EntitySet<Round>(new Action<Round>(this.attach_Rounds), new Action<Round>(this.detach_Rounds));
+			this._User = default(EntityRef<User>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Quiz_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Quiz_Id
+		{
+			get
+			{
+				return this._Quiz_Id;
+			}
+			set
+			{
+				if ((this._Quiz_Id != value))
+				{
+					this.OnQuiz_IdChanging(value);
+					this.SendPropertyChanging();
+					this._Quiz_Id = value;
+					this.SendPropertyChanged("Quiz_Id");
+					this.OnQuiz_IdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FK_Users", DbType="Int NOT NULL")]
+		public int FK_Users
+		{
+			get
+			{
+				return this._FK_Users;
+			}
+			set
+			{
+				if ((this._FK_Users != value))
+				{
+					if (this._User.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnFK_UsersChanging(value);
+					this.SendPropertyChanging();
+					this._FK_Users = value;
+					this.SendPropertyChanged("FK_Users");
+					this.OnFK_UsersChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Location", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string Location
+		{
+			get
+			{
+				return this._Location;
+			}
+			set
+			{
+				if ((this._Location != value))
+				{
+					this.OnLocationChanging(value);
+					this.SendPropertyChanging();
+					this._Location = value;
+					this.SendPropertyChanged("Location");
+					this.OnLocationChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date", DbType="DateTime NOT NULL")]
+		public System.DateTime Date
+		{
+			get
+			{
+				return this._Date;
+			}
+			set
+			{
+				if ((this._Date != value))
+				{
+					this.OnDateChanging(value);
+					this.SendPropertyChanging();
+					this._Date = value;
+					this.SendPropertyChanged("Date");
+					this.OnDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string name
+		{
+			get
+			{
+				return this._name;
+			}
+			set
+			{
+				if ((this._name != value))
+				{
+					this.OnnameChanging(value);
+					this.SendPropertyChanging();
+					this._name = value;
+					this.SendPropertyChanged("name");
+					this.OnnameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Quizze_Result", Storage="_Results", ThisKey="Quiz_Id", OtherKey="FK_Quiz")]
+		public EntitySet<Result> Results
+		{
+			get
+			{
+				return this._Results;
+			}
+			set
+			{
+				this._Results.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Quiz_Round", Storage="_Rounds", ThisKey="Quiz_Id", OtherKey="FK_Quiz")]
+		public EntitySet<Round> Rounds
+		{
+			get
+			{
+				return this._Rounds;
+			}
+			set
+			{
+				this._Rounds.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Quizze", Storage="_User", ThisKey="FK_Users", OtherKey="User_Id", IsForeignKey=true)]
+		public User User
+		{
+			get
+			{
+				return this._User.Entity;
+			}
+			set
+			{
+				User previousValue = this._User.Entity;
+				if (((previousValue != value) 
+							|| (this._User.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._User.Entity = null;
+						previousValue.Quizs.Remove(this);
+					}
+					this._User.Entity = value;
+					if ((value != null))
+					{
+						value.Quizs.Add(this);
+						this._FK_Users = value.User_Id;
+					}
+					else
+					{
+						this._FK_Users = default(int);
+					}
+					this.SendPropertyChanged("User");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Results(Result entity)
+		{
+			this.SendPropertyChanging();
+			entity.Quiz = this;
+		}
+		
+		private void detach_Results(Result entity)
+		{
+			this.SendPropertyChanging();
+			entity.Quiz = null;
+		}
+		
+		private void attach_Rounds(Round entity)
+		{
+			this.SendPropertyChanging();
+			entity.Quiz = this;
+		}
+		
+		private void detach_Rounds(Round entity)
+		{
+			this.SendPropertyChanging();
+			entity.Quiz = null;
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Rounds")]
 	public partial class Round : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -1278,6 +1557,8 @@ namespace GymGame.Models
 		private int _Max_Time;
 		
 		private string _Round_name;
+		
+		private System.Nullable<System.DateTime> _Round_started;
 		
 		private EntitySet<Question> _Questions;
 		
@@ -1295,6 +1576,8 @@ namespace GymGame.Models
     partial void OnMax_TimeChanged();
     partial void OnRound_nameChanging(string value);
     partial void OnRound_nameChanged();
+    partial void OnRound_startedChanging(System.Nullable<System.DateTime> value);
+    partial void OnRound_startedChanged();
     #endregion
 		
 		public Round()
@@ -1388,6 +1671,26 @@ namespace GymGame.Models
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Round_started", DbType="DateTime")]
+		public System.Nullable<System.DateTime> Round_started
+		{
+			get
+			{
+				return this._Round_started;
+			}
+			set
+			{
+				if ((this._Round_started != value))
+				{
+					this.OnRound_startedChanging(value);
+					this.SendPropertyChanging();
+					this._Round_started = value;
+					this.SendPropertyChanged("Round_started");
+					this.OnRound_startedChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Round_Question", Storage="_Questions", ThisKey="Round_Id", OtherKey="FK_Round")]
 		public EntitySet<Question> Questions
 		{
@@ -1465,261 +1768,6 @@ namespace GymGame.Models
 		{
 			this.SendPropertyChanging();
 			entity.Round = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Users")]
-	public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _User_Id;
-		
-		private string _Firstname;
-		
-		private string _Lastname;
-		
-		private int _FK_Role;
-		
-		private System.Nullable<int> _FB_UserId;
-		
-		private EntitySet<Quiz> _Quizs;
-		
-		private EntitySet<Result> _Results;
-		
-		private EntityRef<Role> _Role;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnUser_IdChanging(int value);
-    partial void OnUser_IdChanged();
-    partial void OnFirstnameChanging(string value);
-    partial void OnFirstnameChanged();
-    partial void OnLastnameChanging(string value);
-    partial void OnLastnameChanged();
-    partial void OnFK_RoleChanging(int value);
-    partial void OnFK_RoleChanged();
-    partial void OnFB_UserIdChanging(System.Nullable<int> value);
-    partial void OnFB_UserIdChanged();
-    #endregion
-		
-		public User()
-		{
-			this._Quizs = new EntitySet<Quiz>(new Action<Quiz>(this.attach_Quizs), new Action<Quiz>(this.detach_Quizs));
-			this._Results = new EntitySet<Result>(new Action<Result>(this.attach_Results), new Action<Result>(this.detach_Results));
-			this._Role = default(EntityRef<Role>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_User_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int User_Id
-		{
-			get
-			{
-				return this._User_Id;
-			}
-			set
-			{
-				if ((this._User_Id != value))
-				{
-					this.OnUser_IdChanging(value);
-					this.SendPropertyChanging();
-					this._User_Id = value;
-					this.SendPropertyChanged("User_Id");
-					this.OnUser_IdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Firstname", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
-		public string Firstname
-		{
-			get
-			{
-				return this._Firstname;
-			}
-			set
-			{
-				if ((this._Firstname != value))
-				{
-					this.OnFirstnameChanging(value);
-					this.SendPropertyChanging();
-					this._Firstname = value;
-					this.SendPropertyChanged("Firstname");
-					this.OnFirstnameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Lastname", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string Lastname
-		{
-			get
-			{
-				return this._Lastname;
-			}
-			set
-			{
-				if ((this._Lastname != value))
-				{
-					this.OnLastnameChanging(value);
-					this.SendPropertyChanging();
-					this._Lastname = value;
-					this.SendPropertyChanged("Lastname");
-					this.OnLastnameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FK_Role", DbType="Int NOT NULL")]
-		public int FK_Role
-		{
-			get
-			{
-				return this._FK_Role;
-			}
-			set
-			{
-				if ((this._FK_Role != value))
-				{
-					if (this._Role.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnFK_RoleChanging(value);
-					this.SendPropertyChanging();
-					this._FK_Role = value;
-					this.SendPropertyChanged("FK_Role");
-					this.OnFK_RoleChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FB_UserId", DbType="Int")]
-		public System.Nullable<int> FB_UserId
-		{
-			get
-			{
-				return this._FB_UserId;
-			}
-			set
-			{
-				if ((this._FB_UserId != value))
-				{
-					this.OnFB_UserIdChanging(value);
-					this.SendPropertyChanging();
-					this._FB_UserId = value;
-					this.SendPropertyChanged("FB_UserId");
-					this.OnFB_UserIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Quiz", Storage="_Quizs", ThisKey="User_Id", OtherKey="FK_Users")]
-		public EntitySet<Quiz> Quizs
-		{
-			get
-			{
-				return this._Quizs;
-			}
-			set
-			{
-				this._Quizs.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Result", Storage="_Results", ThisKey="User_Id", OtherKey="FK_User")]
-		public EntitySet<Result> Results
-		{
-			get
-			{
-				return this._Results;
-			}
-			set
-			{
-				this._Results.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Role_User", Storage="_Role", ThisKey="FK_Role", OtherKey="Role_Id", IsForeignKey=true)]
-		public Role Role
-		{
-			get
-			{
-				return this._Role.Entity;
-			}
-			set
-			{
-				Role previousValue = this._Role.Entity;
-				if (((previousValue != value) 
-							|| (this._Role.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Role.Entity = null;
-						previousValue.Users.Remove(this);
-					}
-					this._Role.Entity = value;
-					if ((value != null))
-					{
-						value.Users.Add(this);
-						this._FK_Role = value.Role_Id;
-					}
-					else
-					{
-						this._FK_Role = default(int);
-					}
-					this.SendPropertyChanged("Role");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_Quizs(Quiz entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = this;
-		}
-		
-		private void detach_Quizs(Quiz entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = null;
-		}
-		
-		private void attach_Results(Result entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = this;
-		}
-		
-		private void detach_Results(Result entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = null;
 		}
 	}
 }

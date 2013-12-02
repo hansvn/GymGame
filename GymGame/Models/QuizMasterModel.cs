@@ -18,6 +18,7 @@ namespace GymGame.Models
          * -Update queries --ok
          * 
          * -schrijven (quiz, vraag1, ..) --ok
+         * nog insertquery waar id's automatisch worden toegevoegd.
          * 
          * (-statussen opvolgen (juiste vragen,...) )
          **/

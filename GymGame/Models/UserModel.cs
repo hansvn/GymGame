@@ -12,7 +12,7 @@ namespace GymGame.Models
 
         private GymGameModelDataContext dc = new GymGameModelDataContext();
 
-        public User SaveUser(User u)
+        public User saveUser(User u)
         {
             if (u == null)
             {
@@ -31,16 +31,39 @@ namespace GymGame.Models
             return result;
         }
 
-        public User logIn(int fbId)
+        public User logIn(User user)
+        {
+            if (user.FB_UserId == null)
+            {
+                throw new Exception("Facebook ID must be given...");
+            }
+            var result = (from u in dc.Users
+                          where u.FB_UserId.Equals(user.FB_UserId)
+                          select u).Single();
+            //check if username has changed:
+            if (result.Firstname.Equals(user.Firstname) && result.Lastname.Equals(user.Lastname))
+            {
+                return result;
+            }
+            else
+            {
+                return saveUser(user);
+            }
+        }
+
+        public Boolean userExists(String fbId)
         {
             if (fbId == null)
             {
                 throw new Exception("Facebook ID must be given...");
             }
-            var result = (from u in dc.Users
-                          where u.FB_UserId == fbId
-                          select u).Single();
-            return result;
+
+            //check if users exists (with .any() function)
+            var value = (from u in dc.Users
+                        where u.FB_UserId.Equals(fbId)
+                        select u).Any();
+
+            return value;
         }
     }
 }

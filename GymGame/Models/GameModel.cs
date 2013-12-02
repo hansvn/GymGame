@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using GymGame.Classes;
 
 namespace GymGame.Models
 {
@@ -54,7 +55,7 @@ namespace GymGame.Models
             return result;
         }
 
-        public List<Result> getAllByQuiz(Quiz q)
+        public List<Result> getAllResultsByQuiz(Quiz q)
         {
             var result = (from r in dc.Results
                           where r.FK_Quiz == q.Quiz_Id
@@ -62,7 +63,7 @@ namespace GymGame.Models
             return result;
         }
 
-        public List<Result> getAllByQuestion(Question qu)
+        public List<Result> getAllResultsByQuestion(Question qu)
         {
             var result = (from r in dc.Results
                           where r.FK_Question == qu.Question_Id
@@ -109,6 +110,18 @@ namespace GymGame.Models
             return (Quiz)result;
         }
 
+        public Quiz getQuizByName(Quiz quiz)
+        {
+            if (quiz == null)
+            {
+                throw new Exception("User must be given...");
+            }
+            var result = (from q in dc.Quizs
+                          where q.name == quiz.name
+                          select q).Single();
+            return (Quiz)result;
+        }
+
         public List<Round> getAllRounds(Quiz q)
         {
             if (q == null)
@@ -145,7 +158,7 @@ namespace GymGame.Models
             return result;
         }
 
-        public List<Object> getPlayableQuiz(Quiz quiz)
+        public List<Object> getFullQuiz(Quiz quiz)
         {
             if (quiz == null)
             {
@@ -180,6 +193,16 @@ namespace GymGame.Models
             playableQuiz.Add(playAnswers);
 
             return playableQuiz;
+        }
+
+        public PlayableQuiz getPlayableQuiz(int quizId)
+        {
+            return new PlayableQuiz(quizId);
+        }
+
+        public PlayableQuiz getPlayableQuizByName(String quizName)
+        {
+            return new PlayableQuiz(quizName);
         }
 
 
