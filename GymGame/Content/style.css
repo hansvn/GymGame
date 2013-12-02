@@ -1,0 +1,14 @@
+﻿.container {
+    text-align:center
+}
+
+.questionText {
+    text-align: center;
+}
+
+.answer {
+    text-align:center;
+    width: 200px;
+    display: block;
+    margin: 10px auto;
+}

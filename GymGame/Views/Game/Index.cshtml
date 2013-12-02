@@ -1,44 +1,46 @@
 ﻿@model GymGame.Classes.PlayableQuiz
 @{
+    Layout = "~/Views/Game/_LayoutGame.cshtml";
     ViewBag.Title = "Quiz spelen";
 }
 
 @if (ViewBag.status != "error" && Model.quiz.active != 0)
 {
     
-<h4>@Model.quiz.name</h4>
+<h2>@Model.quiz.name</h2>
 
 <!-- ajaxcall om eerste vraag op te halen -->
-<a href="#">START</a>
-
-<ul>
-    @foreach (var playableRound in Model.playableRounds)
+    int inactiveRounds = 0;
+    foreach (var playableRound in Model.playableRounds)
     {
-        <li>
-            @playableRound.round.Round_name
+        if(playableRound.isActive)
+        {
             
-            <ul>
-                @foreach (var playableQuestion in playableRound.playableQuestions)
-                {
-                    <div id="questions">
-                    <li>
-
-                        @playableQuestion.question.Question_Text
-                        <ul>
+<a href="#" class="btn btn-success" >START</a>
+        
+            <h3>@playableRound.round.Round_name</h3>
+                <div class="questions">
+                    @foreach (var playableQuestion in playableRound.playableQuestions)
+                    {
+                        <div class="question">
+                            <div class="questionText">@playableQuestion.question.Question_Text</div>
                             @foreach (var answer in playableQuestion.answers)
                             {
-                                <li>
-                                    @answer.Answer_Text
-                                </li>
+                                <a href="#" class="answer btn btn-default">@answer.Answer_Text</a>
                             }
-                        </ul>
-                    </li>
-                    </div>
-                }
-            </ul>
-        </li>
+                        </div>
+                    }
+                </div>
+        }
+        else
+        {
+            inactiveRounds++;
+        }
     }
-</ul>
+if(inactiveRounds == Model.playableRounds.Count)
+{
+    <div>Er zijn momenteel geen rondes actief...</div>
+}
 
 }
 else

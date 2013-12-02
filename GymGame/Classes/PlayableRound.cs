@@ -9,6 +9,7 @@ namespace GymGame.Classes
     public class PlayableRound
     {
         public Round round = new Round();
+        public Boolean isActive = false;
         public List<PlayableQuestion> playableQuestions = new List<PlayableQuestion>();
         GameModel gm = new GameModel();
 
@@ -19,6 +20,12 @@ namespace GymGame.Classes
         {
             //select the round
             round = rnd;
+            if (round.Round_started != null)
+            {
+                DateTime maxTime = (DateTime)round.Round_started;
+                maxTime.AddSeconds(round.Max_Time);
+                isActive = round.Round_started.Equals(maxTime);
+            }
 
             //get the questions and create playable questions
             List<Question> questions = gm.getAllQuestions(round);
