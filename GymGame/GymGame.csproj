@@ -112,6 +112,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\PlayableQuestion.cs" />
+    <Compile Include="Classes\PlayableQuiz.cs" />
+    <Compile Include="Classes\PlayableRound.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\QuizMasterController.cs" />
