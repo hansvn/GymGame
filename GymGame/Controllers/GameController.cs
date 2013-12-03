@@ -51,7 +51,17 @@ namespace GymGame.Controllers
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex);
-                    ViewBag.status = "no quiz given";
+                    //probeer op naam te zoeken (kleine kans, maar vergroot UX)
+                    try
+                    {
+                        playQuiz = gm.getPlayableQuizByName(id);
+                        ViewBag.status = "success";
+                    }
+                    catch (Exception exc)
+                    {
+                        Console.WriteLine(exc);
+                        ViewBag.status = "no quiz given";
+                    }
                 }
             }
 
@@ -76,12 +86,25 @@ namespace GymGame.Controllers
             if (result != null)
             {
                 ViewBag.foundQuiz = result.name;
-                ViewBag.quizUrl = result.name;
+                ViewBag.quizUrl = result.code;
             }
             else
             {
-                ViewBag.foundQuiz = "We Couldn't find that quiz :(";
-                ViewBag.quizUrl = "#";
+                //we konden de quiz niet op de naam vinden, probeer het op code
+                result = new Quiz();
+                result.code = quizCode;
+                result = gm.getQuizByCode(result);
+
+                if (result != null)
+                {
+                    ViewBag.foundQuiz = result.name;
+                    ViewBag.quizUrl = result.code;
+                }
+                else
+                {
+                    ViewBag.foundQuiz = "Die quiz hebben we niet gevonden :(";
+                    ViewBag.quizUrl = "#";
+                }
             }
             return View();
         }
@@ -191,8 +214,8 @@ namespace GymGame.Controllers
                 {
                     //haal resultaten op
                     Quiz q = new Quiz();
-                    q.name = id;
-                    q = gm.getQuizByName(q);
+                    q.code = id;
+                    q = gm.getQuizByCode(q);
                     List<Result> res = gm.getResultsByUserAndQuiz(u, q);
                     foreach (Result r in res)
                     {
@@ -204,7 +227,27 @@ namespace GymGame.Controllers
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex);
-                    ViewBag.status = "no quiz given";
+                    //probeer op naam te zoeken (kleine kans, maar vergroot UX)
+                    try
+                    {
+                        //haal resultaten op
+                        Quiz q = new Quiz();
+                        q.name = id;
+                        q = gm.getQuizByName(q);
+                        List<Result> res = gm.getResultsByUserAndQuiz(u, q);
+                        foreach (Result r in res)
+                        {
+                            results.Add(new CompleteResult(r));
+                        }
+
+                        ViewBag.status = "success";
+                    }
+                    catch (Exception exc)
+                    {
+                        Console.WriteLine(exc);
+
+                        ViewBag.status = "no quiz given";
+                    }
                 }
             }
 
