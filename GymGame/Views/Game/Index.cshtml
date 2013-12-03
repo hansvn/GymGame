@@ -16,39 +16,68 @@
         if(playableRound.isActive)
         {
             
-<a href="#" class="btn btn-success" >START</a>
-        
             <h3>@playableRound.round.Round_name</h3>
-                <div class="questions">
+            <a href="#" class="btn btn-success" id="startButton">START</a>
+
+                <ul class="questions">
                     @foreach (var playableQuestion in playableRound.playableQuestions)
                     {
-                        <div class="question">
+                        <li class="question">
                             <div class="questionText">@playableQuestion.question.Question_Text</div>
                             @foreach (var answer in playableQuestion.answers)
                             {
                                 <a href="#" class="answer btn btn-default">@answer.Answer_Text</a>
                             }
-                        </div>
+                            <a href="#" class="nextQuestion btn btn-success">Volgende vraag</a>
+                        </li>
                     }
-                </div>
+                </ul>
+            <a href="#" class="btn btn-success" id="resultButton">RESULTATEN</a>
         }
         else
         {
             inactiveRounds++;
         }
     }
-if(inactiveRounds == Model.playableRounds.Count)
-{
+    <script>
+        $(document).ready(function () {
+            //do this also in css!
+            $(".question").hide();
+            $("#resultButton").hide();
+            $("#startButton").click(function(){
+                $(".question").first().addClass('activeQuestion').show();
+                $(this).hide();
+            });
+            $("a.nextQuestion").click(function () {
+                //do the ajax call
+
+                //show next question
+                var toShow = $('.activeQuestion').next().length > 0 ? $('.activeQuestion').next() : $('#resultButton').show();
+                $('.activeQuestion').hide();
+                $('.activeQuestion').removeClass('activeQuestion');
+                toShow.addClass('activeQuestion');
+                $('.activeQuestion').show();
+            });
+            $("a.answer").click(function () {
+                //check if this is the only selected answer first
+                $(this).removeClass('btn-default');
+                $(this).addClass('btn-info');
+                $(this).addClass('selectedAnswer');
+            });
+        });
+    </script>
+    if (inactiveRounds == Model.playableRounds.Count)
+    {
     <div>Er zijn momenteel geen rondes actief...</div>
-}
+    }
 
 }
 else
 {
     <p>We konden geen quiz vinden...</p>
-    <form>
+    <form action="~/game/search/" method="get">
         <label for="quizCode">Quiz: </label>
         <input type="text" id="quizCode" name="quizCode" />
-        <input type="submit" name="submit" value="quiz zoeken" />
+        <input type="submit" value="quiz zoeken" />
     </form>
 }

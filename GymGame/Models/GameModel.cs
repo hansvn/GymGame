@@ -118,7 +118,7 @@ namespace GymGame.Models
             }
             var result = (from q in dc.Quizs
                           where q.name == quiz.name
-                          select q).Single();
+                          select q).SingleOrDefault();
             return (Quiz)result;
         }
 

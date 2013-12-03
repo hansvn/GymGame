@@ -21,7 +21,7 @@ namespace GymGame.Controllers
             if (Session["userId"] == null)
             {
                 //gebruiker is niet ingelogd: doorverwijzen naar account/login
-                Response.Redirect("account/login");
+                Response.Redirect("~/account/login");
             }
 
             GameModel gm = new GameModel();
@@ -64,6 +64,28 @@ namespace GymGame.Controllers
         public void StartGame() 
         {
             
+        }
+
+        [HttpGet]
+        public ActionResult Search(String quizCode)
+        {
+            GameModel gm = new GameModel();
+            Quiz result = new Quiz();
+            result.name = quizCode;
+
+            result = gm.getQuizByName(result);
+
+            if (result != null)
+            {
+                ViewBag.foundQuiz = result.name;
+                ViewBag.quizUrl = result.name;
+            }
+            else
+            {
+                ViewBag.foundQuiz = "We Couldn't find that quiz :(";
+                ViewBag.quizUrl = "#";
+            }
+            return View();
         }
 
     
