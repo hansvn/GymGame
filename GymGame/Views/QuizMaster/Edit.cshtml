@@ -8,7 +8,7 @@
 
 <h2>Edit Game</h2>
 
-<form class="" role="form">
+<form class="" role="form" action="~/Quizmaster/Save" method="post">
   <div class="form-group">
     <label class="" for="">Naam</label>
     <input type="text" class="form-control" id="gameName" value="@ViewBag.name">
@@ -18,7 +18,7 @@
     { 
         <div class="form-group">
             <label class="sr-only" for="">Ronde:</label>
-            <input type="text" class="form-control" id="" value="@r.round.Round_name">
+            <input type="text" class="form-control" name="round_@r.round.Round_Id" id="" value="@r.round.Round_name">
         </div>
          <ul>
 
@@ -27,15 +27,15 @@
             <li>
                 <div class="form-group">
                     <label class="sr-only" for="">Vraag #</label>
-                    <input type="text" class="form-control" id="" value="@q.question.Question_Text">
+                    <input type="text" class="form-control" name="question" id="" value="@q.question.Question_Text">
                 </div>
                 <ul>
                     @foreach (var a in q.answers) 
                     {
                         <li>
                             <div class="form-group">
-                                <label class="sr-only" for="">Vraag:</label>
-                                <input type="text" class="form-control" id="" value="@a.Answer_Text">
+                                <label class="sr-only" for="">Antwoord:</label>
+                                <input type="text" class="form-control" id="" name="answer" value="@a.Answer_Text">
                                 <!-- razor doet moeilijk.. lijnen moeten volledig  -->
                                     @if (@a.Answer_value == 1) 
                                     {<input type="checkbox" class="form-control" checked />}
@@ -55,4 +55,5 @@
              }
         </ul> 
     }
+    <input type="submit" name="save" value="Opslaan" />
     </form>

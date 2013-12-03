@@ -67,7 +67,7 @@ namespace GymGame.Controllers
             // hard coded omdat hij de waarde niet uit de url krijg
             //PlayableQuiz plquiz = new PlayableQuiz(int.Parse(quiz_Id));
            
-            var hardId = 2;
+            var hardId = 1;
             PlayableQuiz plquiz = new PlayableQuiz(hardId);
 
             ViewBag.name = plquiz.quiz.name;
@@ -77,10 +77,29 @@ namespace GymGame.Controllers
             return View(plquiz);
         }
 
+        [HttpPost]
+        public ActionResult Save()
+        {
+            // al de data uit het form halen en indien nodig updaten in db.
+            //in eerste fase alle data updaten in db.
+            var form = Request.Form.AllKeys;
+             
+            
+            foreach (var key in Request.Form.Keys)
+            {
+                
+            }
+
+            
+            return View();
+        }
+
+
+
         // later uitwerken.
         public String Delete(String quiz_Id)
         {
-            // uit datadank verwijderen, maar hoe? nog te voorzien.
+            // uit datadank verwijderen, maar hoe? nog te voorzien. Op inactief zetten.
            
             return quiz_Id + " uit de databank verwijderd" + "<a href='/Quizmaster/manage'> terug </a>";
         }
