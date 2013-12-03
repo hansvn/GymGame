@@ -7,7 +7,7 @@
 @if (ViewBag.status != "error" && Model.quiz.active != 0)
 {
     
-<h2>@Model.quiz.name</h2>
+<h2 id="quizName" data-quiz="@Model.quiz.Quiz_Id">@Model.quiz.name</h2>
 
 <!-- ajaxcall om eerste vraag op te halen -->
     int inactiveRounds = 0;
@@ -23,12 +23,13 @@
                     @foreach (var playableQuestion in playableRound.playableQuestions)
                     {
                         <li class="question">
-                            <div class="questionText">@playableQuestion.question.Question_Text</div>
+                            <div class="questionText" data-question="@playableQuestion.question.Question_Id">@playableQuestion.question.Question_Text</div>
                             @foreach (var answer in playableQuestion.answers)
                             {
-                                <a href="#" class="answer btn btn-default">@answer.Answer_Text</a>
+                                <a href="#" class="answer btn btn-default" data-answer="@answer.Answer_Id">@answer.Answer_Text</a>
                             }
                             <a href="#" class="nextQuestion btn btn-success">Volgende vraag</a>
+                            <div class="feedback"></div>
                         </li>
                     }
                 </ul>
@@ -49,17 +50,60 @@
                 $(this).hide();
             });
             $("a.nextQuestion").click(function () {
-                //do the ajax call
+                //get the values
+                var selAnswer = $(this).parent(".question").find(".selectedAnswer");
+                var answerId = selAnswer.data("answer");
+                console.log("answer Id: " + selAnswer.data("answer"));
+                var curQuestion = $(this).parent(".question").find(".questionText");
+                var questionId = curQuestion.data("question");
+                console.log("question Id: " + questionId);
+                var quizId = $("#quizName").data("quiz");
+                console.log("quiz Id: " + quizId);
 
-                //show next question
-                var toShow = $('.activeQuestion').next().length > 0 ? $('.activeQuestion').next() : $('#resultButton').show();
-                $('.activeQuestion').hide();
-                $('.activeQuestion').removeClass('activeQuestion');
-                toShow.addClass('activeQuestion');
-                $('.activeQuestion').show();
+                /*//get the websites base url
+                var pathArray = window.location.href.split('/');
+                var protocol = pathArray[0];
+                var host = pathArray[2];
+                var url = protocol + '://' + host;
+                console.log(url);*/
+
+                //do the ajax call
+                $.ajax({
+                    type: "POST",
+                    url: "/game/saveanswer",
+                    dataType: 'json',
+                    data: { answerId: answerId, questionId: questionId, quizId: quizId }
+                }).done(function (msg) {
+                    console.log(msg);
+                    if (msg == "success") {
+                        console.log("ok");
+                        //we can succeed
+                        //show next question
+                        var toShow = $('.activeQuestion').next().length > 0 ? $('.activeQuestion').next() : $('#resultButton').show();
+                        $('.activeQuestion').hide();
+                        $('.activeQuestion').removeClass('activeQuestion');
+                        toShow.addClass('activeQuestion');
+                        $('.activeQuestion').show();
+                    }
+                    else {
+                        //try again
+                        console.log("there was an error");
+                        var fb = $(this).parent(".question").find(".feedback");
+                        fb.html(msg);
+                        fb.css("background-color", "red");
+                    }
+                });
+
             });
             $("a.answer").click(function () {
                 //check if this is the only selected answer first
+                var selected = $(this).parent(".question").find(".selectedAnswer");
+                console.log(selected);
+                selected.removeClass('selectedAnswer');
+                selected.removeClass('btn-info');
+                selected.addClass('btn-default');
+
+                //select the new answer
                 $(this).removeClass('btn-default');
                 $(this).addClass('btn-info');
                 $(this).addClass('selectedAnswer');

@@ -10,7 +10,7 @@ namespace GymGame.Models
     {
         private GymGameModelDataContext dc = new GymGameModelDataContext();
 
-        public int InsertResult(User user, Question question, Answer answer, Quiz quiz)
+        public int InsertResultByValues(User user, Question question, Answer answer, Quiz quiz)
         {
             /**
              * User komt van Sessie,
@@ -26,6 +26,19 @@ namespace GymGame.Models
             r.FK_Answer = answer.Answer_Id;
             r.FK_Quiz = quiz.Quiz_Id;
 
+            //posten naar database
+            dc.Results.InsertOnSubmit(r);
+            dc.SubmitChanges();
+
+            return r.Result_Id;
+        }
+
+        public int InsertResult(Result r)
+        {
+            if (r == null)
+            {
+                throw new Exception("Result must be given...");
+            }
             //posten naar database
             dc.Results.InsertOnSubmit(r);
             dc.SubmitChanges();

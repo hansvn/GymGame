@@ -6,7 +6,7 @@
     text-align: center;
 }
 
-.answer .nextQuestion {
+.answer, .nextQuestion {
     text-align:center;
     width: 200px;
     display: block;

@@ -88,6 +88,67 @@ namespace GymGame.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult SaveAnswer(FormCollection f)
+        {
+            GameModel gm = new GameModel();
+            Result result = new Result();
+
+            String status = "error";
+
+            try
+            {
+                if (f["quizId"] != null)
+                {
+                    result.FK_Quiz = int.Parse(f["quizId"]);
+                }
+                else
+                {
+                    throw new Exception("quizId is nog given");
+                }
+                if (f["questionId"] != null)
+                {
+                    result.FK_Question = int.Parse(f["questionId"]);
+                }
+                else
+                {
+                    throw new Exception("questionId is nog given");
+                }
+                if (f["answerId"] != null)
+                {
+                    result.FK_Answer = int.Parse(f["answerId"]);
+                }
+                else
+                {
+                    throw new Exception("answerId is nog given");
+                }
+
+                if (Session["userId"] != null)
+                {
+                    result.FK_User = (int)Session["userId"];
+                    //result.FK_User = int.Parse((string)Session["userId"]);
+                }
+                else
+                {
+                    //gebruiker is niet ingelogd: doorverwijzen naar account/login
+                    Response.Redirect("~/account/login");
+                }
+
+                int resultId = gm.InsertResult(result);
+                if (resultId > 0)
+                {
+                    //als we een id terug krijgen, is de post gelukt :)
+                    status = "success";
+                }
+            }
+            catch (Exception e)
+            {
+                status = e.Message;
+            }
+
+            return Json(status, JsonRequestBehavior.AllowGet);
+        }
+
     
 
     }
