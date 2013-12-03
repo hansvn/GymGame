@@ -67,7 +67,7 @@ namespace GymGame.Controllers
             // hard coded omdat hij de waarde niet uit de url krijg
             //PlayableQuiz plquiz = new PlayableQuiz(int.Parse(quiz_Id));
            
-            var hardId = 2;
+            var hardId = 1;
             PlayableQuiz plquiz = new PlayableQuiz(hardId);
 
             ViewBag.name = plquiz.quiz.name;
