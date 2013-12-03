@@ -1,4 +1,8 @@
-﻿.container {
+﻿body {
+    margin-top: 2%;
+}
+
+.container {
     text-align:center
 }
 

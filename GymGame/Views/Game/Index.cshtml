@@ -4,7 +4,7 @@
     ViewBag.Title = "Quiz spelen";
 }
 
-@if (ViewBag.status != "error" && Model.quiz.active != 0)
+@if (ViewBag.status != "error" && Model.quiz.active != 0 && !Model.userPlayed)
 {
     
 <h2 id="quizName" data-quiz="@Model.quiz.Quiz_Id">@Model.quiz.name</h2>
@@ -117,12 +117,19 @@
     }
 
 }
+else if (Model.userPlayed)
+{
+    <p class="text-warning">Je hebt deze quiz al eens gespeeld...</p>
+    <a href="/game/results/@Model.quiz.code" class="btn btn-success" id="resultButton">RESULTATEN</a>
+}
 else
 {
     <p>We konden geen quiz vinden...</p>
-    <form action="~/game/search/" method="get">
-        <label for="quizCode">Quiz: </label>
-        <input type="text" id="quizCode" name="quizCode" />
-        <input type="submit" value="quiz zoeken" />
+    <form action="~/game/search/" method="get" role="form">
+        <div class="form-group">
+            <label for="quizCode">Quiz</label>
+            <input type="text" id="quizCode" name="quizCode" class="form-control" placeholder="Typ de quiz"/>
+        </div>
+        <input type="submit" value="quiz zoeken" class="btn btn-default" />
     </form>
 }

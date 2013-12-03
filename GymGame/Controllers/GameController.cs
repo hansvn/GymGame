@@ -65,6 +65,18 @@ namespace GymGame.Controllers
                 }
             }
 
+            //check if the user already played the quiz
+            User u = new User();
+            u.User_Id = (int)Session["userId"];
+            List<Result> resultsByUser = gm.getResultsByUser(u);
+            foreach (Result r in resultsByUser)
+            {
+                if (r.FK_Quiz == playQuiz.quiz.Quiz_Id)
+                {
+                    playQuiz.userPlayed = true;
+                }
+            }
+
             return View(playQuiz);
         }
 

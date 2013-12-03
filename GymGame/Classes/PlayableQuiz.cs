@@ -10,6 +10,7 @@ namespace GymGame.Classes
     {
         public Quiz quiz = new Quiz();
         public List<PlayableRound> playableRounds = new List<PlayableRound>();
+        public Boolean userPlayed = false;
         GameModel gm = new GameModel();
 
         //constructor
