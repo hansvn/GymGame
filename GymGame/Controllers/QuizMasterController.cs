@@ -62,15 +62,18 @@ namespace GymGame.Controllers
         {
             // alle velden van een bepaalde quiz opvragen.
             // en de velden hiermee vullen.
+           
             //**** TO DO //
             // hard coded omdat hij de waarde niet uit de url krijg
             //PlayableQuiz plquiz = new PlayableQuiz(int.Parse(quiz_Id));
            
-            
             var hardId = 1;
             PlayableQuiz plquiz = new PlayableQuiz(hardId);
+
             ViewBag.name = plquiz.quiz.name;
-          
+            ViewBag.countRounds = plquiz.quiz.Rounds.Count;
+            
+
             return View(plquiz);
         }
 
