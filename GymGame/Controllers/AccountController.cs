@@ -81,9 +81,10 @@ namespace GymGame.Controllers
 
 
             //set the facebook id in the session: set that the user is logged in
-            Session["userId"] = u.User_Id;
             Session["firstname"] = u.Firstname;
             Session["lastname"] = u.Lastname;
+            Session["fbUserId"] = result.id;
+            Session["userId"] = u.User_Id;
             Session["fbUserId"] = result.id;
             ViewBag.status = "loggedIn";
 

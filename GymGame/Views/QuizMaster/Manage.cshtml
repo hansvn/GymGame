@@ -8,7 +8,7 @@
 <ul>
    @foreach (var l in ViewBag.quizzes)
    { 
-    <li>Quiz nr. @l.Quiz_Id @l.Location @l.Date 
+    <li>Quiz: @l.Quiz_Id @l.name @l.Location @l.Date 
        <input type="hidden" name="@l.Quiz_Id" />
         <a href="~/Quizmaster/Edit/@l.Quiz_Id">Aanpassen</a>
         <a href="~/Quizmaster/Delete/@l.Quiz_Id">Verwijder</a>

@@ -1,30 +1,58 @@
-﻿@{
+﻿@model GymGame.Classes.PlayableQuiz
+
+@{
     ViewBag.Title = "Edit";
     Layout = "~/Views/QuizMaster/_LayoutQuizMaster.cshtml";
 }
 
+
 <h2>Edit Game</h2>
+
 <form class="" role="form">
   <div class="form-group">
-    <label class="" for="">Naam van het spel</label>
-    <input type="text" class="form-control" id="gameName" placeholder="Naam van het nieuwe spel">
+    <label class="" for="">Naam</label>
+    <input type="text" class="form-control" id="gameName" value="@ViewBag.name">
   </div>
     <hr />
-  <div class="form-group">
-    <label class="sr-only" for="">Vraag # </label>
-    <input type="text" class="form-control" id="" placeholder="Vraag #">
-  </div>
-    
-    <div class="form-group">
-    <label class="sr-only" for="">Antwoord 1 </label>
-    <input type="text" class="form-control" id="" placeholder="Antwoord 1">
+    @foreach (var r in Model.playableRounds)
+    { 
+        <div class="form-group">
+            <label class="sr-only" for="">Ronde:</label>
+            <input type="text" class="form-control" id="" value="@r.round.Round_name">
+        </div>
+         <ul>
 
-  </div>
-    <div class="form-group">
-    <label class="sr-only" for="">Antwoord 2 </label>
-    <input type="text" class="form-control" id="" placeholder="Antwoord 2">
-  </div>
-    <div class="form-group">
-    <label class="sr-only" for="">Antwoord 3 </label>
-    <input type="text" class="form-control" id="" placeholder="Antwoord 3">
-  </div>
+        @foreach (var q in r.playableQuestions)
+        { 
+            <li>
+                <div class="form-group">
+                    <label class="sr-only" for="">Vraag #</label>
+                    <input type="text" class="form-control" id="" value="@q.question.Question_Text">
+                </div>
+                <ul>
+                    @foreach (var a in q.answers) 
+                    {
+                        <li>
+                            <div class="form-group">
+                                <label class="sr-only" for="">Vraag:</label>
+                                <input type="text" class="form-control" id="" value="@a.Answer_Text">
+                                <!-- razor doet moeilijk.. lijnen moeten volledig  -->
+                                    @if (@a.Answer_value == 1) 
+                                    {<input type="checkbox" class="form-control" checked />}
+                                else 
+                                {
+                                    <input type="checkbox" class="form-control" />    
+                                    }
+                                   
+                            </div>
+                        </li>
+                    }
+
+                </ul>
+
+            </li>   
+       
+             }
+        </ul> 
+    }
+    </form>

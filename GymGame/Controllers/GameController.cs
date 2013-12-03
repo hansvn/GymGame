@@ -15,15 +15,23 @@ namespace GymGame.Controllers
 
         public ActionResult Index(String id)
         {
+            
 
             // Op basis van wat er werd ingegeven achter Game/... wordt er een bepaalde quiz geselecteerd.
             // checken of de gebruiker al is ingelogd. Indien niet -> /login -> 
+<<<<<<< HEAD
             if (Session["userId"] == null)
             {
                 //gebruiker is niet ingelogd: doorverwijzen naar account/login
                 Response.Redirect("~/account/login");
             }
 
+=======
+            ViewBag.id = id;
+            // is er een user sessie? En wie is de gebruiker?
+            ViewBag.username = "Willy"; // test Willy hardcoded.
+            //test for playable quizzes... ----**!
+>>>>>>> 977c6434dfc2119c65ad62eeabbcb531735b7db4
             GameModel gm = new GameModel();
             PlayableQuiz playQuiz = new PlayableQuiz();
             //kijk of de quiz gegeven is, anders gaan we de status aanpassen naar "no quiz given"
