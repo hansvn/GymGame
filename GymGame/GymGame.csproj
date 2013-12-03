@@ -112,6 +112,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\CompleteResult.cs" />
     <Compile Include="Classes\PlayableQuestion.cs" />
     <Compile Include="Classes\PlayableQuiz.cs" />
     <Compile Include="Classes\PlayableRound.cs" />
@@ -168,6 +169,7 @@
     <Content Include="Scripts\jquery-1.9.1.min.map" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Game\Search.cshtml" />
+    <Content Include="Views\Game\Results.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Models\GymGameModel.dbml">

@@ -30,12 +30,12 @@ namespace GymGame.Classes
             }
         }
 
-        public PlayableQuiz(String quizName)
+        public PlayableQuiz(String quizCode)
         {
             //select the quiz
             Quiz selectQuiz = new Quiz();
-            selectQuiz.name = quizName;
-            quiz = gm.getQuizByName(selectQuiz);
+            selectQuiz.code = quizCode;
+            quiz = gm.getQuizByCode(selectQuiz);
 
             //select the rounds and create playable rounds
             List<Round> rounds = gm.getAllRounds(quiz);

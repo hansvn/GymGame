@@ -33,7 +33,7 @@
                         </li>
                     }
                 </ul>
-            <a href="#" class="btn btn-success" id="resultButton">RESULTATEN</a>
+            <a href="/game/results" class="btn btn-success" id="resultButton">RESULTATEN</a>
         }
         else
         {
@@ -59,6 +59,9 @@
                 console.log("question Id: " + questionId);
                 var quizId = $("#quizName").data("quiz");
                 console.log("quiz Id: " + quizId);
+
+                var fb = $(this).parent(".question").find(".feedback");
+                console.log(fb);
 
                 /*//get the websites base url
                 var pathArray = window.location.href.split('/');
@@ -87,10 +90,8 @@
                     }
                     else {
                         //try again
-                        console.log("there was an error");
-                        var fb = $(this).parent(".question").find(".feedback");
-                        fb.html(msg);
-                        fb.css("background-color", "red");
+                        console.log("there was an error: "+msg);
+                        fb.html("We konden je antwoord niet opslaan...<br />Probeer aub opnieuw.");
                     }
                 });
 
@@ -125,65 +126,3 @@ else
         <input type="submit" value="quiz zoeken" />
     </form>
 }
-=======
-﻿@model GymGame.Classes.PlayableQuiz
-@{
-    ViewBag.Title = "Quiz spelen";
-}
-
-<h2>Game Home</h2>
-<h3>Hello, 
-    @{ if (@HttpContext.Current.Session["firstname"] != null) 
-       {@HttpContext.Current.Session["firstname"].ToString()}
-                                                            else{
-       <p>you are not logged in</p>}                                                     
-                                                            }</h3>
-<h3> Begin spel: @ViewBag.id</h3>
-@if (ViewBag.status != "error" && Model.quiz.active != 0)
-{
-
-<h4>@Model.quiz.name</h4>
-
-<!-- ajaxcall om eerste vraag op te halen -->
-<a href="#">START</a>
-
-<ul>
-    @foreach (var playableRound in Model.playableRounds)
-    {
-        <li>
-            @playableRound.round.Round_name
-            
-            <ul>
-                @foreach (var playableQuestion in playableRound.playableQuestions)
-                {
-<div id="questions">
-                    <li>
-
-                        @playableQuestion.question.Question_Text
-                        <ul>
-                            @foreach (var answer in playableQuestion.answers)
-                            {
-                                <li>
-                                    @answer.Answer_Text
-                                </li>
-                            }
-                        </ul>
-                    </li>
-</div>
-                }
-            </ul>
-        </li>
-    }
-</ul>
-
-}
-else
-{
-    <p>We konden geen quiz vinden...</p>
-    <form>
-        <label for="quizCode">Quiz: </label>
-        <input type="text" id="quizCode" name="quizCode" />
-        <input type="submit" name="submit" value="quiz zoeken" />
-    </form>
-}
->>>>>>> 977c6434dfc2119c65ad62eeabbcb531735b7db4

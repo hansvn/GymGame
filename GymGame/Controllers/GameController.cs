@@ -10,24 +10,18 @@ namespace GymGame.Controllers
 {
     public class GameController : Controller
     {
-       
-        // GET: /Game/
 
         public ActionResult Index(String id)
         {
-            
 
             // Op basis van wat er werd ingegeven achter Game/... wordt er een bepaalde quiz geselecteerd.
-            // checken of de gebruiker al is ingelogd. Indien niet -> /login -> 
+            // checken of de gebruiker al is ingelogd. Indien niet -> /login ->
             if (Session["userId"] == null)
             {
                 //gebruiker is niet ingelogd: doorverwijzen naar account/login
                 Response.Redirect("~/account/login");
             }
-            ViewBag.id = id;
-            // is er een user sessie? En wie is de gebruiker?
-            ViewBag.username = "Willy"; // test Willy hardcoded.
-            //test for playable quizzes... ----**!
+
             GameModel gm = new GameModel();
             PlayableQuiz playQuiz = new PlayableQuiz();
             //kijk of de quiz gegeven is, anders gaan we de status aanpassen naar "no quiz given"
@@ -51,23 +45,23 @@ namespace GymGame.Controllers
                 //als we hier terechtkomen is de id een textuele string (bv. "abc")
                 try
                 {
-                    playQuiz = gm.getPlayableQuizByName(id);
+                    playQuiz = gm.getPlayableQuizByCode(id);
                     ViewBag.status = "success";
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex);
                     ViewBag.status = "no quiz given";
-                } 
+                }
             }
 
             return View(playQuiz);
         }
 
 
-        public void StartGame() 
+        public void StartGame()
         {
-            
+
         }
 
         [HttpGet]
@@ -153,6 +147,83 @@ namespace GymGame.Controllers
             return Json(status, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult Results(String id)
+        {
+            // checken of de gebruiker al is ingelogd. Indien niet -> /login ->
+            if (Session["userId"] == null)
+            {
+                //gebruiker is niet ingelogd: doorverwijzen naar account/login
+                Response.Redirect("~/account/login");
+            }
+
+            GameModel gm = new GameModel();
+            List<CompleteResult> results = new List<CompleteResult>();
+            
+            //kijk of de quiz gegeven is, anders gaan we de status aanpassen naar "no quiz given"
+            User u = new User();
+            u.User_Id = (int)Session["userId"];
+
+            try
+            {
+                int quizId = int.Parse(id);
+                try
+                {
+                    //haal resultaten op
+                    Quiz q = new Quiz();
+                    q.Quiz_Id = quizId;
+                    List<Result> res = gm.getResultsByUserAndQuiz(u, q);
+                    foreach (Result r in res)
+                    {
+                        results.Add(new CompleteResult(r));
+                    }
+                    ViewBag.status = "success";
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    ViewBag.status = "no quiz given";
+                }
+            }
+            catch (Exception e)
+            {
+                //als we hier terechtkomen is de id een textuele string (bv. "abc")
+                try
+                {
+                    //haal resultaten op
+                    Quiz q = new Quiz();
+                    q.name = id;
+                    q = gm.getQuizByName(q);
+                    List<Result> res = gm.getResultsByUserAndQuiz(u, q);
+                    foreach (Result r in res)
+                    {
+                        results.Add(new CompleteResult(r));
+                    }
+                    
+                    ViewBag.status = "success";
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    ViewBag.status = "no quiz given";
+                }
+            }
+
+            //viewbag data:
+            //the number of questions
+            int questions = results.Count();
+            ViewBag.questions = questions;
+
+            //count the right answers
+            int rightAnswers = 0;
+            foreach (CompleteResult cr in results)
+            {
+                if (cr.answer.Answer_value == 1) rightAnswers++;
+            }
+            ViewBag.rightAnswers = rightAnswers;
+            ViewBag.percentage = Math.Round(((double)rightAnswers / questions) * 100);
+
+            return View(results);
+        }
     
 
     }

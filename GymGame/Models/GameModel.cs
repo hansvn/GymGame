@@ -62,6 +62,10 @@ namespace GymGame.Models
 
         public List<Result> getResultsByUser(User u)
         {
+            if (u == null)
+            {
+                throw new Exception("User must be given...");
+            }
             var result = (from r in dc.Results
                           where r.FK_User == u.User_Id
                           select r).ToList<Result>();
@@ -115,11 +119,11 @@ namespace GymGame.Models
         {
             if (quiz == null)
             {
-                throw new Exception("User must be given...");
+                throw new Exception("Quiz must be given...");
             }
             var result = (from q in dc.Quizs
                           where q.Quiz_Id == quiz.Quiz_Id
-                          select q).Single();
+                          select q).SingleOrDefault();
             return (Quiz)result;
         }
 
@@ -131,6 +135,18 @@ namespace GymGame.Models
             }
             var result = (from q in dc.Quizs
                           where q.name == quiz.name
+                          select q).SingleOrDefault();
+            return (Quiz)result;
+        }
+
+        public Quiz getQuizByCode(Quiz quiz)
+        {
+            if (quiz == null)
+            {
+                throw new Exception("Quiz must be given...");
+            }
+            var result = (from q in dc.Quizs
+                          where q.code == quiz.code
                           select q).SingleOrDefault();
             return (Quiz)result;
         }
@@ -226,6 +242,53 @@ namespace GymGame.Models
             return new PlayableQuiz(quizName);
         }
 
+        public PlayableQuiz getPlayableQuizByCode(String quizName)
+        {
+            if (quizName == null)
+            {
+                throw new Exception("Quiz code must be given...");
+            }
+            return new PlayableQuiz(quizName);
+        }
 
+
+
+
+        // --------------------------------------------------------- Result(s) Query's
+        public Answer getAnswer(Answer ans)
+        {
+            if (ans == null)
+            {
+                throw new Exception("Answer must be given...");
+            }
+            var result = (from a in dc.Answers
+                          where a.Answer_Id == ans.Answer_Id
+                          select a).SingleOrDefault();
+            return (Answer)result;
+        }
+
+        public Question getQuestion(Question qu)
+        {
+            if (qu == null)
+            {
+                throw new Exception("Question must be given...");
+            }
+            var result = (from q in dc.Questions
+                          where q.Question_Id == qu.Question_Id
+                          select q).SingleOrDefault();
+            return (Question)result;
+        }
+
+        public Answer getRightAnswer(Question qu)
+        {
+            if (qu == null)
+            {
+                throw new Exception("Question must be given...");
+            }
+            var result = (from a in dc.Answers
+                          where a.FK_Question == qu.Question_Id && a.Answer_value == 1
+                          select a).SingleOrDefault();
+            return (Answer)result;
+        }
     }
 }

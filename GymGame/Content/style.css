@@ -12,3 +12,9 @@
     display: block;
     margin: 10px auto;
 }
+
+.table {
+    width: 50%;
+    min-width: 350px;
+    margin: 10px auto;
+}

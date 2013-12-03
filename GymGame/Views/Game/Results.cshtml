@@ -1,0 +1,43 @@
+﻿@model List<GymGame.Classes.CompleteResult>
+@{
+    ViewBag.Title = "Results";
+    Layout = "~/Views/Game/_LayoutGame.cshtml";
+}
+
+<h2 class="quizName">Resultaten voor @Model.First().quiz.name</h2>
+
+@if (ViewBag.status != "error")
+{
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <tbody>
+                <tr><th>Aantal Vragen</th><td>@ViewBag.questions</td></tr>
+                <tr><th>Score</th><td>@ViewBag.rightAnswers (@ViewBag.percentage%)</td></tr>
+                <tr><th>Ranking</th><td>.</td></tr>
+            </tbody>
+        </table>
+
+        <table class="table table-bordered">
+            <tbody>
+    @foreach(var res in Model)
+    {
+        <tr class="@(res.answer.Answer_value == 1 ?"success":"danger")">
+            <th>Vraag </th><td>@res.question.Question_Text</td></tr>
+        <tr class="@(res.answer.Answer_value == 1 ?"success":"danger")">
+            <th>Jouw Antwoord</th><td>@res.answer.Answer_Text</td></tr>
+        if (!res.isRight)
+        {
+            <tr class="warning"><th>Het juiste antwoord</th><td>@res.rightAnswer.Answer_Text</td></tr>
+        }
+        <tr class="spacer"><td colspan="2"></td></tr>
+        
+    }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <p>We konden uw resultaten niet vinden.</p>
+}
+
