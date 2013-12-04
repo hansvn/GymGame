@@ -175,6 +175,7 @@
     <Content Include="Views\LeaderBoard\Index.cshtml" />
     <Content Include="Views\LeaderBoard\_LayoutLeaderBoard.cshtml" />
     <Content Include="Views\LeaderBoard\Quiz.cshtml" />
+    <Content Include="Views\QuizMaster\Start.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Models\GymGameModel.dbml">
