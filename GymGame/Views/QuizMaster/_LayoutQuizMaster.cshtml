@@ -14,15 +14,18 @@
     <link href="~/Content/style.css" rel="stylesheet" />
 </head>
 <body>
-    <nav>
-        <ul>
+    <div class="container">
+    <nav class="navbar navbar-default">
+        <ul class="nav navbar-nav">
+            <li class="navbar-brand">QuizMaster Admin</li>
             <li>@Html.ActionLink("Home", "")</li>
             <li>@Html.ActionLink("Maak nieuw game", "New")</li>
             <li>@Html.ActionLink("Beheer games", "Manage")</li>
-       
+            <li>@Html.ActionLink("Start games", "Start")</li>
         </ul>
     </nav>
-    <div>
+    </div>
+    <div class="container">
         @RenderBody()
     </div>
 </body>
