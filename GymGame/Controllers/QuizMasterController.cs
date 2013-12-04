@@ -86,11 +86,123 @@ namespace GymGame.Controllers
         }
 
 
-        public ActionResult Start()
+        public ActionResult Start(String id)
         {
-            // een quiz starten. Timer starten.. 
+            GameModel gm = new GameModel();
+            Quiz quiz = selectQuiz(id);
+            List<Round> rounds = gm.getAllRounds(quiz);
 
-            return View();
+            ViewBag.quizName = quiz.name;
+
+            return View(rounds);
+        }
+
+        //functies om quizzen of rondes uit db te krijgen
+        private Quiz selectQuiz(String id)
+        {
+            GameModel gm = new GameModel();
+            Quiz quiz = new Quiz();
+            //kijk of de quiz gegeven is, anders gaan we de status aanpassen naar "no quiz given"
+            int quizId;
+            String status;
+            try
+            {
+                quizId = int.Parse(id);
+                try
+                {
+                    quiz.Quiz_Id = quizId;
+                    quiz = gm.getQuiz(quiz);
+                    status = "success";
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    status = "no quiz given";
+                }
+            }
+            catch (Exception e)
+            {
+                //als we hier terechtkomen is de id een textuele string (bv. "abc")
+                try
+                {
+                    quiz.code = id;
+                    quiz = gm.getQuizByCode(quiz);
+                    status = "success";
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    //probeer op naam te zoeken (kleine kans, maar vergroot UX)
+                    try
+                    {
+                        quiz.name = id;
+                        quiz = gm.getQuizByName(quiz);
+                        status = "success";
+                    }
+                    catch (Exception exc)
+                    {
+                        Console.WriteLine(exc);
+                        status = "error";
+                    }
+                }
+            }
+
+            if (status != "success")
+            {
+                return new Quiz();
+            }
+            else
+            {
+                return quiz;
+            }
+        }
+
+        private Round selectRound(String id)
+        {
+            GameModel gm = new GameModel();
+            Round round = new Round();
+            //kijk of de quiz gegeven is, anders gaan we de status aanpassen naar "no quiz given"
+            int roundId;
+            String status;
+            try
+            {
+                roundId = int.Parse(id);
+                try
+                {
+                    round.Round_Id = roundId;
+                    round = gm.getRound(round);
+                    status = "success";
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    status = "no round given";
+                }
+            }
+            catch (Exception e)
+            {
+                //als we hier terechtkomen is de id een textuele string (bv. "abc")
+                try
+                {
+                    round.Round_name = id;
+                    round = gm.getRoundByName(round);
+                    status = "success";
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    status = "no round given";
+                }
+            }
+
+            if (status != "success")
+            {
+                return new Round();
+            }
+            else
+            {
+                return round;
+            }
         }
     }
 }

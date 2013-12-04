@@ -1,0 +1,48 @@
+﻿@model List<GymGame.Models.Round>
+@{
+    ViewBag.Title = "Start";
+    Layout = "~/Views/QuizMaster/_LayoutQuizMaster.cshtml";
+}
+
+<h2>Start</h2>
+
+<table class="table">
+    <tbody>
+        @foreach (var r in Model)
+        {   
+            if(r.Round_started != null)
+            {
+                DateTime maxTime = (DateTime)r.Round_started;
+                maxTime = maxTime.AddSeconds((double)r.Max_Time);
+                DateTime currentTime = DateTime.Now;
+                Boolean isActive = (r.Round_started <= currentTime && currentTime < maxTime);
+            
+                <tr>
+                    <th>@r.Round_name</th>
+                    <td>@(isActive ?"Gestart":"Gestopt")
+                    </td>
+                    <td>@if(isActive) {
+                            <div class='btn btn-default'>Stop</div>
+                        }
+                        else
+                        {
+                            <div class='btn btn-default'>Start</div>
+                        }
+                    </td>
+                </tr>
+            }
+            else{
+                <tr>
+                    <th>@r.Round_name</th>
+                    <td>
+                        Nog niet gestart
+                    </td>
+                    <td>
+                        <div class='btn btn-default'>Start</div>
+                    </td>
+                </tr>
+            }
+            
+        }
+    </tbody>
+</table>

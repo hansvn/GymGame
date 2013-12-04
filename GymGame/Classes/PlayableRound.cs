@@ -23,8 +23,9 @@ namespace GymGame.Classes
             if (round.Round_started != null)
             {
                 DateTime maxTime = (DateTime)round.Round_started;
-                maxTime.AddSeconds(round.Max_Time);
-                isActive = round.Round_started.Equals(maxTime);
+                maxTime = maxTime.AddSeconds((double)round.Max_Time);
+                DateTime currentTime = DateTime.Now;
+                isActive = (round.Round_started <= currentTime && currentTime < maxTime);
             }
 
             //get the questions and create playable questions

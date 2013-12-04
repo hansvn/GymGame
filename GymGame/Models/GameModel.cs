@@ -151,6 +151,30 @@ namespace GymGame.Models
             return (Quiz)result;
         }
 
+        public Round getRound(Round round)
+        {
+            if (round == null)
+            {
+                throw new Exception("Round must be given...");
+            }
+            var result = (from r in dc.Rounds
+                          where r.Round_Id == round.Round_Id
+                          select r).SingleOrDefault();
+            return (Round)result;
+        }
+
+        public Round getRoundByName(Round round)
+        {
+            if (round == null)
+            {
+                throw new Exception("Round must be given...");
+            }
+            var result = (from r in dc.Rounds
+                          where r.Round_name == round.Round_name
+                          select r).SingleOrDefault();
+            return (Round)result;
+        }
+        
         public List<Round> getAllRounds(Quiz q)
         {
             if (q == null)

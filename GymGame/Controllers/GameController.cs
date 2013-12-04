@@ -67,7 +67,10 @@ namespace GymGame.Controllers
 
             //check if the user already played the quiz
             User u = new User();
-            u.User_Id = (int)Session["userId"];
+            if (Session["userId"] != null)
+            {
+                u.User_Id = (int)Session["userId"];
+            }
             List<Result> resultsByUser = gm.getResultsByUser(u);
             foreach (Result r in resultsByUser)
             {
