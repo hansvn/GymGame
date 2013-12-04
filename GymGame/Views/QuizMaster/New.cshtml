@@ -6,26 +6,36 @@
 
 
 <h2>Een nieuw game maken.</h2>
-<form class="" role="form" action="" method="post">
+<form role="form" action="~/Quizmaster/New" method="post">
   <div class="form-group">
-    <label class="" for="">Naam van het spel</label>
-    <input type="text" class="form-control" id="gameName" name="gameName" placeholder="Naam van het nieuwe spel">
+    <label for="quizName">Naam van het spel</label>
+    <input type="text" class="form-control" id="quizName" name="quizName" placeholder="Naam van het nieuwe spel">
+      <label for="quizLocation">Locatie</label>
+    <input type="text" class="form-control" id="quizLocation" name="gameLocation" placeholder="Locatie van het nieuwe spel">
   </div>
-    <hr />
+  <hr />
+
     <div id="vraag">
-  <div class="form-group">
-    <label class="sr-only" for="">Vraag 1 </label>
-    <input type="text" class="form-control" id="gamequestion" name="question" placeholder="Vraag #">
-  </div>
+        <div class="form-group">
+            <label for="gamequestion">Vraag 1 </label>
+            <input type="text" class="form-control" id="gamequestion" name="question_0" placeholder="Vraag 1">
+        </div>
+
     @for (var i = 0; i < 3; i++)
     {
     @:<div class="form-group">
-    <label class="sr-only" for="">Antwoord @(i+1)  </label>
-    <input type="text" class="form-control" id="" name="a@(i+1)" placeholder="Antwoord @(i+1)"/>
-        <input type="checkbox" name="ca@(i+1)" />
+    <label for="a@(i+1)">Antwoord @(i+1)  </label>
+    <input type="text" class="form-control " id="a@(i+1)" name="answer_@(i+1)" placeholder="Antwoord @(i+1)"/>
+        <div class="checkbox">
+         <label>   juiste antwoord
+        <input type="checkbox" name="correctAnswer_@(i+1)" />
+             </label>
+        </div>
      @:</div>   
         }
- </div>
+    </div>
+
+
   <hr />
     <!-- Opslaan -->
   <button type="submit" class="btn btn-default">Opslaan</button>

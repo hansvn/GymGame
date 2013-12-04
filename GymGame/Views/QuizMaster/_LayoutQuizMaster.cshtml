@@ -8,14 +8,13 @@
     <script src="~/Scripts/jquery-1.9.1.js"></script>
 
     <script src="~/Scripts/jquery-1.9.1.min.js"></script>
-    <link href="~/Content/reset.css" rel="stylesheet" />
+
     <link href="~/Content/bootstrap-theme.css" rel="stylesheet" />
     <link href="~/Content/bootstrap.css" rel="stylesheet" />
-    <link href="~/Content/style.css" rel="stylesheet" />
 </head>
 <body>
-    <div class="container">
-    <nav class="navbar navbar-default">
+    <div>
+    <nav class="navbar navbar-default navbar-static-top">
         <ul class="nav navbar-nav">
             <li class="navbar-brand">QuizMaster Admin</li>
             <li>@Html.ActionLink("Home", "")</li>
@@ -25,6 +24,7 @@
         </ul>
     </nav>
     </div>
+
     <div class="container">
         @RenderBody()
     </div>
