@@ -16,6 +16,7 @@ namespace GymGame.Classes
         public Boolean isRight;
         Result result = new Result();
         GameModel gm = new GameModel();
+        UserModel um = new UserModel();
 
         public CompleteResult(Result res)
         {
@@ -44,6 +45,10 @@ namespace GymGame.Classes
                 //get the quiz
                 quiz.Quiz_Id = res.FK_Quiz;
                 quiz = gm.getQuiz(quiz);
+
+                //get the user
+                user.User_Id = res.FK_User;
+                user = um.getUser(user.User_Id);
             }
             catch (Exception e)
             {

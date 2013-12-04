@@ -113,11 +113,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\CompleteResult.cs" />
+    <Compile Include="Classes\Leader.cs" />
     <Compile Include="Classes\PlayableQuestion.cs" />
     <Compile Include="Classes\PlayableQuiz.cs" />
     <Compile Include="Classes\PlayableRound.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\GameController.cs" />
+    <Compile Include="Controllers\LeaderBoardController.cs" />
     <Compile Include="Controllers\QuizMasterController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -170,6 +172,9 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Game\Search.cshtml" />
     <Content Include="Views\Game\Results.cshtml" />
+    <Content Include="Views\LeaderBoard\Index.cshtml" />
+    <Content Include="Views\LeaderBoard\_LayoutLeaderBoard.cshtml" />
+    <Content Include="Views\LeaderBoard\Quiz.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Models\GymGameModel.dbml">
