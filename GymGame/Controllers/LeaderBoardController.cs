@@ -94,11 +94,13 @@ namespace GymGame.Controllers
                     quiz.Quiz_Id = quizId;
                     quiz = gm.getQuiz(quiz);
                     ViewBag.status = "success";
+                    ViewBag.quizName = quiz.name;
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
                     ViewBag.status = "no quiz given";
+                    ViewBag.quizName = "No Quiz found...";
                 }
             }
             catch (Exception e)
@@ -109,6 +111,7 @@ namespace GymGame.Controllers
                     quiz.code = id;
                     quiz = gm.getQuizByCode(quiz);
                     ViewBag.status = "success";
+                    ViewBag.quizName = quiz.name;
                 }
                 catch (Exception ex)
                 {
@@ -119,11 +122,13 @@ namespace GymGame.Controllers
                         quiz.name = id;
                         quiz = gm.getQuizByName(quiz);
                         ViewBag.status = "success";
+                        ViewBag.quizName = quiz.name;
                     }
                     catch (Exception exc)
                     {
                         Console.WriteLine(exc);
                         ViewBag.status = "no quiz given";
+                        ViewBag.quizName = "No Quiz found...";
                     }
                 }
             }

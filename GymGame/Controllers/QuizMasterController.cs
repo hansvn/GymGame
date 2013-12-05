@@ -97,6 +97,61 @@ namespace GymGame.Controllers
             return View(rounds);
         }
 
+        [HttpPost]
+        public ActionResult Start(FormCollection f)
+        {
+            QuizMasterModel qmm = new QuizMasterModel();
+            Round round = selectRound(f["roundId"]);
+
+            var status = new Dictionary<string, string>{};
+            try
+            {
+                //start round (current time is set there)
+                if (f["action"] == "start")
+                {
+                    int duration = int.Parse(f["duration"]) * 60;
+                    round.Max_Time = int.Parse(f["duration"]) * 60;
+                    round = qmm.startRound(round);
+                }
+                else
+                {
+                    round = qmm.stopRound(round);
+                }
+                status.Add("status","success");
+            }
+            catch (Exception e)
+            {
+                status.Add("status", "error");
+            }
+
+            //set additional return values
+            if (f["action"] == "start")
+            {
+                status.Add("current", "Gestart");
+            }
+            else
+            {
+                status.Add("current", "Gestopt");
+            }
+
+            DateTime maxTime = new DateTime();
+            if (round.Round_started != null) { maxTime = (DateTime)round.Round_started; }
+            if (round.Max_Time != null) { maxTime = maxTime.AddSeconds((double)round.Max_Time); }
+
+            String timeRemaining = "0";
+
+            if (round.Round_started <= DateTime.Now && DateTime.Now < maxTime)
+            {
+                TimeSpan timeRem = (TimeSpan)(maxTime - DateTime.Now);
+                timeRemaining = Math.Round(timeRem.TotalSeconds).ToString();
+            }
+            else { timeRemaining = round.Max_Time.ToString(); }
+
+            status.Add("timeRemaining", timeRemaining);
+
+            return Json(status, JsonRequestBehavior.AllowGet);
+        }
+
         //functies om quizzen of rondes uit db te krijgen
         private Quiz selectQuiz(String id)
         {
