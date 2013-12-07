@@ -77,6 +77,15 @@ else if (ViewBag.status == "error")
        <p>We konden je niet inloggen... <br />Probeer later nog eens.</p>
 }
 else {
+    // check if user is a quizmaster
+    if (Session["userLevel"].ToString() == "2") 
+    {
+        <nav>
+            <ul>
+                <li><a href="/quizmaster">Beheer je quizzen</a></li>
+            </ul>
+        </nav>
+    }
        <p>Je bent ingelogd :)</p>
        <a href="/game/index" class="btn btn-default">Play Time</a>
 }

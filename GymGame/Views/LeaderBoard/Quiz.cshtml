@@ -11,7 +11,7 @@
             <tr><th>Speler</th><th>Score</th></tr>
             @for (int i = 0; i < Model.Count; i++)
             {
-                <tr><td>@Model[i].user.Firstname</td><td>@Model[i].score%</td></tr>
+                <tr><td><a href="https://www.facebook.com/@Model[i].user.FB_UserId">@Model[i].user.Firstname</a></td><td>@Model[i].score%</td></tr>
             }
         </tbody>
     </table>

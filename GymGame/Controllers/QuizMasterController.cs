@@ -88,11 +88,20 @@ namespace GymGame.Controllers
 
         public ActionResult Start(String id)
         {
-            GameModel gm = new GameModel();
-            Quiz quiz = selectQuiz(id);
-            List<Round> rounds = gm.getAllRounds(quiz);
+            List<Round> rounds = new List<Round>();
 
-            ViewBag.quizName = quiz.name;
+            if (id != null)
+            {
+                GameModel gm = new GameModel();
+                Quiz quiz = selectQuiz(id);
+                rounds = gm.getAllRounds(quiz);
+
+                // ronden in sessie zetten, zodat een gebruiker niet via javascript (jquery call) een andere quiz kan starten
+                Session["roundsManaging"] = rounds;
+                ViewBag.quizName = quiz.name;
+                ViewBag.status = "success";
+            }
+            else { ViewBag.status = "error"; }
 
             return View(rounds);
         }
@@ -103,51 +112,74 @@ namespace GymGame.Controllers
             QuizMasterModel qmm = new QuizMasterModel();
             Round round = selectRound(f["roundId"]);
 
+            List<Round> rounds = (List<Round>)Session["roundsManaging"];
+            Session.Remove("roundsManaging");
+
+            // return values
             var status = new Dictionary<string, string>{};
+            
             try
             {
-                //start round (current time is set there)
-                if (f["action"] == "start")
+                //hier testen we al of user effectief rondes mag starten
+                Boolean editPermission = false;
+                foreach (Round r in rounds)
                 {
-                    int duration = int.Parse(f["duration"]) * 60;
-                    round.Max_Time = int.Parse(f["duration"]) * 60;
-                    round = qmm.startRound(round);
+                    if(r.Round_Id == round.Round_Id) { editPermission = true; }
                 }
-                else
+
+                if(editPermission)
                 {
-                    round = qmm.stopRound(round);
+                    try
+                    {
+                        //start round (current time is set there)
+                        if (f["action"] == "start")
+                        {
+                            int duration = int.Parse(f["duration"]) * 60;
+                            round.Max_Time = int.Parse(f["duration"]) * 60;
+                            round = qmm.startRound(round);
+                        }
+                        else
+                        {
+                            round = qmm.stopRound(round);
+                        }
+                        status.Add("status","success");
+                    }
+                    catch (Exception e)
+                    {
+                        status.Add("status", "error");
+                    }
+
+                    //set additional return values
+                    if (f["action"] == "start")
+                    {
+                        status.Add("current", "Gestart");
+                    }
+                    else
+                    {
+                        status.Add("current", "Gestopt");
+                    }
+
+                    DateTime maxTime = new DateTime();
+                    if (round.Round_started != null) { maxTime = (DateTime)round.Round_started; }
+                    if (round.Max_Time != null) { maxTime = maxTime.AddSeconds((double)round.Max_Time); }
+
+                    String timeRemaining = "0";
+
+                    if (round.Round_started <= DateTime.Now && DateTime.Now < maxTime)
+                    {
+                        TimeSpan timeRem = (TimeSpan)(maxTime - DateTime.Now);
+                        timeRemaining = Math.Round(timeRem.TotalSeconds).ToString();
+                    }
+                    else { timeRemaining = round.Max_Time.ToString(); }
+
+                    status.Add("timeRemaining", timeRemaining);
                 }
-                status.Add("status","success");
+                else { throw new Exception("Je bent niet gemachtigd om deze quiz te starten..."); }
             }
             catch (Exception e)
             {
                 status.Add("status", "error");
             }
-
-            //set additional return values
-            if (f["action"] == "start")
-            {
-                status.Add("current", "Gestart");
-            }
-            else
-            {
-                status.Add("current", "Gestopt");
-            }
-
-            DateTime maxTime = new DateTime();
-            if (round.Round_started != null) { maxTime = (DateTime)round.Round_started; }
-            if (round.Max_Time != null) { maxTime = maxTime.AddSeconds((double)round.Max_Time); }
-
-            String timeRemaining = "0";
-
-            if (round.Round_started <= DateTime.Now && DateTime.Now < maxTime)
-            {
-                TimeSpan timeRem = (TimeSpan)(maxTime - DateTime.Now);
-                timeRemaining = Math.Round(timeRem.TotalSeconds).ToString();
-            }
-            else { timeRemaining = round.Max_Time.ToString(); }
-
-            status.Add("timeRemaining", timeRemaining);
 
             return Json(status, JsonRequestBehavior.AllowGet);
         }

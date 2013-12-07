@@ -6,6 +6,9 @@
 
 <h2>Start</h2>
 
+@if(ViewBag.status != "error")
+{
+
 <table class="table">
     <tbody>
         @foreach (var r in Model)
@@ -127,10 +130,16 @@
                 else {
                     //try again
                     console.log("there was an error: " + msg);
-                    $("#feedback").html("We konden je antwoord niet opslaan...<br />Probeer aub opnieuw.").addClass("text-danger");
+                    $("#feedback").html("We konden je quiz niet starten...<br />Probeer aub opnieuw.").addClass("text-danger");
                 }
             });
 
         });
     });
 </script>
+//end if (viewbag.status != error)
+}
+else 
+{
+    <p>We konden helaas geen quiz vinden...<br />Probeer opnieuw.</p>
+}
