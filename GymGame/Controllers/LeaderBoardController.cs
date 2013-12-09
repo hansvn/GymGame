@@ -52,7 +52,7 @@ namespace GymGame.Controllers
                     Quiz q = new Quiz();
                     q.Quiz_Id = quizzes[j];
                     q = gm.getQuiz(q);
-                    crByUserQuiz = results.Where(x => x.quiz.Quiz_Id == q.Quiz_Id).ToList<CompleteResult>();
+                    crByUserQuiz = crByUser.Where(x => x.quiz.Quiz_Id == q.Quiz_Id).ToList<CompleteResult>();
 
                     //calculate the values
                     int rightAnswers = 0;
@@ -76,7 +76,7 @@ namespace GymGame.Controllers
                 }
             }
 
-            leaders = leaders.OrderBy(l => l.quiz.Quiz_Id).ThenBy(l => l.score).ToList<Leader>();
+            leaders = leaders.OrderBy(l => l.quiz.Quiz_Id).ThenByDescending(l => l.score).ToList<Leader>();
             return View(leaders);
         }
 
@@ -95,6 +95,7 @@ namespace GymGame.Controllers
                     quiz = gm.getQuiz(quiz);
                     ViewBag.status = "success";
                     ViewBag.quizName = quiz.name;
+                    ViewBag.quizId = quiz.Quiz_Id;
                 }
                 catch (Exception e)
                 {
@@ -112,6 +113,7 @@ namespace GymGame.Controllers
                     quiz = gm.getQuizByCode(quiz);
                     ViewBag.status = "success";
                     ViewBag.quizName = quiz.name;
+                    ViewBag.quizId = quiz.Quiz_Id;
                 }
                 catch (Exception ex)
                 {
@@ -123,6 +125,7 @@ namespace GymGame.Controllers
                         quiz = gm.getQuizByName(quiz);
                         ViewBag.status = "success";
                         ViewBag.quizName = quiz.name;
+                        ViewBag.quizId = quiz.Quiz_Id;
                     }
                     catch (Exception exc)
                     {
@@ -186,5 +189,97 @@ namespace GymGame.Controllers
             return View(leaders);
         }
 
+        [HttpPost]
+        public ActionResult Detail(FormCollection f)
+        {
+            GameModel gm = new GameModel();
+            Quiz quiz = new Quiz();
+            
+            // the return values
+            var status = new Dictionary<string, string> { };
+
+            try
+            {
+                //to check if the round really exists
+                int quizId = int.Parse(f["quizId"]);
+                try
+                {
+                    quiz.Quiz_Id = quizId;
+                    quiz = gm.getQuiz(quiz);
+                    status.Add("status", "success");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    status.Add("status", "error - no quiz given");
+                }
+            }
+            catch (Exception e)
+            {
+                //als we hier terechtkomen is de id een textuele string (bv. "abc")
+                Console.WriteLine(e);
+                status.Add("status", "error - quiz not found");
+            }
+
+            //get the rounds
+            List<Round> rounds = new List<Round>();
+            try { rounds = gm.getAllRounds(quiz); }
+            catch (Exception e) { status["status"] = "error - rounds not found"; }
+
+            //get the results
+            List<CompleteResult> results = new List<CompleteResult>();
+            try
+            {
+                List<Result> resultsByRound = gm.getAllResultsByRound(rounds.First());
+                foreach (Result r in resultsByRound)
+                {
+                    results.Add(new CompleteResult(r));
+                }
+                status["status"] = "success";
+            }
+            catch (Exception e)
+            {
+                status["status"] = "error";
+            }
+
+            List<Leader> leaders = new List<Leader>();
+
+            //select all unique players
+            List<int> users = results.Select(r => r.user.User_Id).Distinct().ToList<int>();
+            for (int i = 0; i < users.Count(); i++)
+            {
+                //filter results by current user
+                List<CompleteResult> crByUser = new List<CompleteResult>();
+                UserModel um = new UserModel();
+                User u = um.getUser(users[i]);
+                crByUser = results.Where(r => r.user.User_Id == u.User_Id).ToList<CompleteResult>();
+
+                //calculate the values
+                int rightAnswers = 0;
+                int questions = crByUser.Select(r => r.question.Question_Id).Distinct().Count();
+                foreach (CompleteResult cr in crByUser)
+                {
+                    if (cr.answer.Answer_value == 1) rightAnswers++;
+                }
+                int score = (int)Math.Round(((double)rightAnswers / questions) * 100);
+
+                //create the leader
+                Leader l = new Leader();
+                l.score = score;
+                l.goodAnswers = rightAnswers;
+                l.questions = questions;
+                l.user = u;
+                l.quiz = quiz;
+                l.round = rounds.First();
+
+                //add the leader to list
+                leaders.Add(l);
+
+            }
+
+            status.Add("data", leaders.ToString());
+
+            return Json(status, JsonRequestBehavior.AllowGet);
+        }
     }
 }

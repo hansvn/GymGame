@@ -14,12 +14,6 @@
         <elementListCompartment Id="91e78869-7286-4508-b9a6-d71033076b9e" absoluteBounds="11.64, 3.585, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="617c0bfa-fc28-465d-bbc5-52e4bc5576f6" absoluteBounds="8.625, 5.625, 2, 1.7708968098958327">
-      <DataClassMoniker Name="/GymGameModelDataContext/Result" />
-      <nestedChildShapes>
-        <elementListCompartment Id="0de1c22e-6734-45b4-a73c-b1dcb9d493bb" absoluteBounds="8.64, 6.085, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
     <classShape Id="2eecd09e-04b6-45eb-93cb-b4179227d72e" absoluteBounds="3.5, 0.625, 2, 1.3862939453125005">
       <DataClassMoniker Name="/GymGameModelDataContext/Role" />
       <nestedChildShapes>
@@ -31,40 +25,6 @@
       <nodes>
         <classShapeMoniker Id="ae3a21c3-e3e7-48e5-837e-c5335d88e143" />
         <classShapeMoniker Id="9474552b-d6fe-4420-b73b-e5e14674c45b" />
-      </nodes>
-    </associationConnector>
-    <associationConnector edgePoints="[(15.375 : 4.64589680989583); (15.375 : 6.51044840494792); (10.625 : 6.51044840494792)]" fixedFrom="NotFixed" fixedTo="NotFixed">
-      <AssociationMoniker Name="/GymGameModelDataContext/Answer/Answer_Result" />
-      <nodes>
-        <classShapeMoniker Id="9474552b-d6fe-4420-b73b-e5e14674c45b" />
-        <classShapeMoniker Id="617c0bfa-fc28-465d-bbc5-52e4bc5576f6" />
-      </nodes>
-    </associationConnector>
-    <associationConnector edgePoints="[(12.78125 : 4.5112939453125); (12.78125 : 6.03647170247396); (10.625 : 6.03647170247396)]" fixedFrom="NotFixed" fixedTo="NotFixed">
-      <AssociationMoniker Name="/GymGameModelDataContext/Question/Question_Result" />
-      <nodes>
-        <classShapeMoniker Id="ae3a21c3-e3e7-48e5-837e-c5335d88e143" />
-        <classShapeMoniker Id="617c0bfa-fc28-465d-bbc5-52e4bc5576f6" />
-      </nodes>
-    </associationConnector>
-    <classShape Id="c209efa9-ee48-4a27-9cb5-f1c884d69eaa" absoluteBounds="3.625, 3, 2, 1.7708968098958331">
-      <DataClassMoniker Name="/GymGameModelDataContext/User" />
-      <nestedChildShapes>
-        <elementListCompartment Id="c4a6a9eb-e042-43c0-8247-c22bad145fc4" absoluteBounds="3.6399999999999997, 3.46, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <associationConnector edgePoints="[(4.625 : 4.77089680989583); (4.625 : 6.5569482421875); (8.625 : 6.5569482421875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/GymGameModelDataContext/User/User_Result" />
-      <nodes>
-        <classShapeMoniker Id="c209efa9-ee48-4a27-9cb5-f1c884d69eaa" />
-        <classShapeMoniker Id="617c0bfa-fc28-465d-bbc5-52e4bc5576f6" />
-      </nodes>
-    </associationConnector>
-    <associationConnector edgePoints="[(4.5625 : 2.0112939453125); (4.5625 : 3)]" fixedFrom="NotFixed" fixedTo="NotFixed">
-      <AssociationMoniker Name="/GymGameModelDataContext/Role/Role_User" />
-      <nodes>
-        <classShapeMoniker Id="2eecd09e-04b6-45eb-93cb-b4179227d72e" />
-        <classShapeMoniker Id="c209efa9-ee48-4a27-9cb5-f1c884d69eaa" />
       </nodes>
     </associationConnector>
     <classShape Id="02d223cd-f2ab-40ca-9fb8-f468a171736a" absoluteBounds="8.875, 3.125, 2, 1.7708968098958331">
@@ -86,25 +46,72 @@
         <elementListCompartment Id="72cfc892-3db2-431d-9f49-e9226b7010ad" absoluteBounds="6.39, 3.46, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(8.375 : 5.15549967447917); (8.625 : 5.625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
-      <AssociationMoniker Name="/GymGameModelDataContext/Quiz/Quizze_Result" />
-      <nodes>
-        <classShapeMoniker Id="7ec45847-a4f7-4ca3-8098-ca0be08c82ac" />
-        <classShapeMoniker Id="617c0bfa-fc28-465d-bbc5-52e4bc5576f6" />
-      </nodes>
-    </associationConnector>
     <associationConnector edgePoints="[(8.375 : 4.01044840494792); (8.875 : 4.01044840494792)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/GymGameModelDataContext/Quiz/Quizze_Round" />
+      <AssociationMoniker Name="/GymGameModelDataContext/Quiz/Quiz_Round" />
       <nodes>
         <classShapeMoniker Id="7ec45847-a4f7-4ca3-8098-ca0be08c82ac" />
         <classShapeMoniker Id="02d223cd-f2ab-40ca-9fb8-f468a171736a" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(5.625 : 3.88544840494792); (6.375 : 3.88544840494792)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/GymGameModelDataContext/User/User_Quizze" />
+    <classShape Id="1de9fedc-d28c-4676-8322-6ebb1bce1356" absoluteBounds="3.625, 3, 2, 1.9631982421875">
+      <DataClassMoniker Name="/GymGameModelDataContext/User" />
+      <nestedChildShapes>
+        <elementListCompartment Id="1eb247e9-cf61-41e5-bc2b-dfa7d70d6ad6" absoluteBounds="3.6399999999999997, 3.46, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(5.625 : 3.98159912109375); (6.375 : 3.98159912109375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/GymGameModelDataContext/User/User_Quiz" />
       <nodes>
-        <classShapeMoniker Id="c209efa9-ee48-4a27-9cb5-f1c884d69eaa" />
+        <classShapeMoniker Id="1de9fedc-d28c-4676-8322-6ebb1bce1356" />
         <classShapeMoniker Id="7ec45847-a4f7-4ca3-8098-ca0be08c82ac" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(4.5625 : 2.0112939453125); (4.5625 : 3)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/GymGameModelDataContext/Role/Role_User" />
+      <nodes>
+        <classShapeMoniker Id="2eecd09e-04b6-45eb-93cb-b4179227d72e" />
+        <classShapeMoniker Id="1de9fedc-d28c-4676-8322-6ebb1bce1356" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="24c613d7-6ca8-4868-8c7f-a6ae9b3d625e" absoluteBounds="7.625, 5.875, 2, 1.9631982421875">
+      <DataClassMoniker Name="/GymGameModelDataContext/Result" />
+      <nestedChildShapes>
+        <elementListCompartment Id="56213040-37a3-4da7-8031-8dead59badba" absoluteBounds="7.6400000000000006, 6.335, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(15.375 : 4.64589680989583); (15.375 : 6.85659912109375); (9.625 : 6.85659912109375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/GymGameModelDataContext/Answer/Answer_Result" />
+      <nodes>
+        <classShapeMoniker Id="9474552b-d6fe-4420-b73b-e5e14674c45b" />
+        <classShapeMoniker Id="24c613d7-6ca8-4868-8c7f-a6ae9b3d625e" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(12.625 : 4.5112939453125); (12.625 : 6.33454706054687); (9.625 : 6.33454706054687)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/GymGameModelDataContext/Question/Question_Result" />
+      <nodes>
+        <classShapeMoniker Id="ae3a21c3-e3e7-48e5-837e-c5335d88e143" />
+        <classShapeMoniker Id="24c613d7-6ca8-4868-8c7f-a6ae9b3d625e" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(8 : 5.15549967447917); (8 : 5.875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/GymGameModelDataContext/Quiz/Quiz_Result" />
+      <nodes>
+        <classShapeMoniker Id="7ec45847-a4f7-4ca3-8098-ca0be08c82ac" />
+        <classShapeMoniker Id="24c613d7-6ca8-4868-8c7f-a6ae9b3d625e" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(9.25 : 4.89589680989583); (9.25 : 5.875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/GymGameModelDataContext/Round/Round_Result" />
+      <nodes>
+        <classShapeMoniker Id="02d223cd-f2ab-40ca-9fb8-f468a171736a" />
+        <classShapeMoniker Id="24c613d7-6ca8-4868-8c7f-a6ae9b3d625e" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(4.625 : 4.9631982421875); (4.625 : 6.85659912109375); (7.625 : 6.85659912109375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/GymGameModelDataContext/User/User_Result" />
+      <nodes>
+        <classShapeMoniker Id="1de9fedc-d28c-4676-8322-6ebb1bce1356" />
+        <classShapeMoniker Id="24c613d7-6ca8-4868-8c7f-a6ae9b3d625e" />
       </nodes>
     </associationConnector>
   </nestedChildShapes>

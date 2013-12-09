@@ -9,6 +9,7 @@ namespace GymGame.Classes
     public class Leader
     {
         public Quiz quiz { get; set; }
+        public Round round { get; set; }
         public User user { get; set; }
         public int goodAnswers { get; set; }
         public int questions { get; set; }

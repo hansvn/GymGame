@@ -16,7 +16,7 @@
             <tr><th rowspan="3">
                 <a href="/leaderboard/quiz/@Model.Select(l => l.quiz.Quiz_Id).FirstOrDefault()" >@Model.Select(l => l.quiz.name).FirstOrDefault()</a>
                 </th><td>@Model[0].user.Firstname</td><td>@Model[0].score%</td></tr>
-            @for (int j = 1; j < Model.Count; j++)
+            @for (int j = 1; j < 3; j++)
             {
                 <tr><td>@Model[j].user.Firstname</td><td>@Model[j].score%</td></tr>
             }

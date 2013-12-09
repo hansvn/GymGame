@@ -80,6 +80,14 @@ namespace GymGame.Models
             return result;
         }
 
+        public List<Result> getAllResultsByRound(Round round)
+        {
+            var result = (from r in dc.Results
+                          where r.FK_Round== round.Round_Id
+                          select r).ToList<Result>();
+            return result;
+        }
+
         public List<Result> getAllResultsByQuestion(Question qu)
         {
             var result = (from r in dc.Results

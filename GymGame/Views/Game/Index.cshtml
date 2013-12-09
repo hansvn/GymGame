@@ -16,7 +16,7 @@
         if(playableRound.isActive)
         {
             
-            <h3>@playableRound.round.Round_name</h3>
+            <h3 class="roundName" data-round="@playableRound.round.Round_Id">@playableRound.round.Round_name</h3>
             <a href="#" class="btn btn-success" id="startButton">START</a>
 
                 <ul class="questions">
@@ -59,6 +59,8 @@
                 console.log("question Id: " + questionId);
                 var quizId = $("#quizName").data("quiz");
                 console.log("quiz Id: " + quizId);
+                var roundId = $(this).parent().parent().parent(".container").find("h3.roundName").data("round");
+                console.log("round Id: " + roundId);
 
                 var fb = $(this).parent(".question").find(".feedback");
                 console.log(fb);
@@ -75,7 +77,7 @@
                     type: "POST",
                     url: "/game/saveanswer",
                     dataType: 'json',
-                    data: { answerId: answerId, questionId: questionId, quizId: quizId }
+                    data: { answerId: answerId, questionId: questionId, roundId:roundId, quizId: quizId }
                 }).done(function (msg) {
                     console.log(msg);
                     if (msg == "success") {
@@ -83,10 +85,10 @@
                         //we can succeed
                         //show next question
                         var toShow = $('.activeQuestion').next().length > 0 ? $('.activeQuestion').next() : $('#resultButton').show();
-                        $('.activeQuestion').hide();
+                        $('.activeQuestion').hide(400);
                         $('.activeQuestion').removeClass('activeQuestion');
                         toShow.addClass('activeQuestion');
-                        $('.activeQuestion').show();
+                        $('.activeQuestion').show(400);
                     }
                     else {
                         //try again

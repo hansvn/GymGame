@@ -4,23 +4,50 @@
     Layout = "~/Views/LeaderBoard/_LayoutLeaderBoard.cshtml";
 }
 
-<h2>Resultaten @ViewBag.quizName</h2>
-<div class="table-responsive">
+<h2 id="quizName" data-quizid="@ViewBag.quizId">Resultaten @ViewBag.quizName</h2>
+@if (ViewBag.status != "error")
+{
+<div class="btn btn-default" id="loadDetails">Laad resultaten per ronde</div>
+<div class="table-responsive overallResults">
     <table class="table table-bordered">
         <tbody>
             <tr><th>Speler</th><th>Score</th></tr>
             @for (int i = 0; i < Model.Count; i++)
             {
-                <tr><td><a href="https://www.facebook.com/@Model[i].user.FB_UserId">@Model[i].user.Firstname</a></td><td>@Model[i].score%</td></tr>
+                <tr><td><a href="https://www.facebook.com/@Model[i].user.FB_UserName">@Model[i].user.Firstname</a></td><td>@Model[i].score%</td></tr>
             }
         </tbody>
     </table>
 </div>
 
 <script>
+    var interval = null;
     $(document).ready(function () {
-        setInterval(function () {
-            location.reload();
-        }, 5000);
+        interval = setInterval(function () {location.reload();}, 5000);
+
+        $("#loadDetails").click(function () {
+            clearInterval(interval);
+
+            var quizId = $("#quizName").data("quizid");
+            console.log("quiz id: " + quizId);
+
+            $.ajax({
+                type: "POST",
+                url: "/leaderboard/detail",
+                dataType: 'json',
+                data: { quizId: quizId }
+            }).done(function (msg) {
+                console.log(msg);
+                if (msg.status == "success") {
+                    console.log("ok");
+                    console.log(msg.data);
+                }
+                else {
+                    //try again
+                    console.log(msg.data);
+                }
+            });
+        });
     });
 </script>
+}
