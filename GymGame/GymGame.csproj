@@ -112,11 +112,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\CompleteResult.cs" />
+    <Compile Include="Classes\Leader.cs" />
     <Compile Include="Classes\PlayableQuestion.cs" />
     <Compile Include="Classes\PlayableQuiz.cs" />
     <Compile Include="Classes\PlayableRound.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\GameController.cs" />
+    <Compile Include="Controllers\LeaderBoardController.cs" />
     <Compile Include="Controllers\QuizMasterController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -143,6 +146,8 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\reset.css" />
+    <Content Include="Content\style.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -165,10 +170,12 @@
     <Content Include="Views\Web.config" />
     <Content Include="Scripts\jquery-1.9.1.min.map" />
     <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\QuizMaster\Edit.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Game\Search.cshtml" />
+    <Content Include="Views\Game\Results.cshtml" />
+    <Content Include="Views\LeaderBoard\Index.cshtml" />
+    <Content Include="Views\LeaderBoard\_LayoutLeaderBoard.cshtml" />
+    <Content Include="Views\LeaderBoard\Quiz.cshtml" />
+    <Content Include="Views\QuizMaster\Start.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Models\GymGameModel.dbml">
@@ -230,7 +237,7 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

@@ -1,0 +1,55 @@
+﻿@model List<GymGame.Classes.Leader>
+@{
+    ViewBag.Title = "Resultaten";
+    Layout = "~/Views/LeaderBoard/_LayoutLeaderBoard.cshtml";
+}
+
+<h2>Resultaten</h2>
+@{
+    List<int> quizIds = Model.Select(r => r.quiz.Quiz_Id).Distinct().ToList<int>();
+}
+@for (int i = 0; i < quizIds.Count(); i++)
+{
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <tbody>
+            <tr><th rowspan="3">
+                @Model.Select(l => l.quiz.name).FirstOrDefault()
+                </th><td>@Model[0].user.Firstname</td><td>@Model[0].score%</td></tr>
+            @for (int j = 1; j < Model.Count; j++)
+            {
+                <tr><td>@Model[j].user.Firstname</td><td>@Model[j].score%</td></tr>
+            }
+        </tbody>
+    </table>
+</div>
+}
+<script>
+    $(document).ready(function () {
+        setInterval(function () {
+            $.ajax({
+                type: "POST",
+                url: "/LeaderBoard/getResults",
+                dataType: 'json',
+                data: { answerId: answerId, questionId: questionId, quizId: quizId }
+            }).done(function (msg) {
+                console.log(msg);
+                if (msg == "success") {
+                    console.log("ok");
+                    //we can succeed
+                    //show next question
+                    var toShow = $('.activeQuestion').next().length > 0 ? $('.activeQuestion').next() : $('#resultButton').show();
+                    $('.activeQuestion').hide();
+                    $('.activeQuestion').removeClass('activeQuestion');
+                    toShow.addClass('activeQuestion');
+                    $('.activeQuestion').show();
+                }
+                else {
+                    //try again
+                    console.log("there was an error: " + msg);
+                    fb.html("We konden je antwoord niet opslaan...<br />Probeer aub opnieuw.");
+                }
+            });
+        }, 5000); //do a call every 5 secs
+    });
+</script>

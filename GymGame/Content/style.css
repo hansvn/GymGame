@@ -1,0 +1,24 @@
+﻿body {
+    margin-top: 2%;
+}
+
+.container {
+    text-align:center
+}
+
+.questionText {
+    text-align: center;
+}
+
+.answer, .nextQuestion {
+    text-align:center;
+    width: 200px;
+    display: block;
+    margin: 10px auto;
+}
+
+.table {
+    width: 50%;
+    min-width: 350px;
+    margin: 10px auto;
+}

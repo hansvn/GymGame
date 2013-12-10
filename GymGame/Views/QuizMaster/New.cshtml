@@ -6,33 +6,76 @@
 
 
 <h2>Een nieuw game maken.</h2>
-<form class="" role="form" action="" method="post">
+<form role="form" action="~/Quizmaster/New" method="post">
   <div class="form-group">
-    <label class="" for="">Naam van het spel</label>
-    <input type="text" class="form-control" id="gameName" name="gameName" placeholder="Naam van het nieuwe spel">
+    <label for="quizName">Naam van het spel</label>
+    <input type="text" class="form-control" id="quizName" name="quizName" placeholder="Naam van het nieuwe spel">
+      <label for="quizLocation">Locatie</label>
+    <input type="text" class="form-control" id="quizLocation" name="gameLocation" placeholder="Locatie van het nieuwe spel">
   </div>
-    <hr />
-  <div class="form-group">
-    <label class="sr-only" for="">Vraag # </label>
-    <input type="text" class="form-control" id="gamequestion" name="question" placeholder="Vraag #">
-  </div>
-    
-    <div class="form-group">
-    <label class="sr-only" for="">Antwoord 1 </label>
-    <input type="text" class="form-control" id="" name="a1" placeholder="Antwoord 1">
+  <hr />
 
-  </div>
-    <div class="form-group">
-    <label class="sr-only" for="">Antwoord 2 </label>
-    <input type="text" class="form-control" id="" name="a2" placeholder="Antwoord 2">
-  </div>
-    <div class="form-group">
-    <label class="sr-only" for="">Antwoord 3 </label>
-    <input type="text" class="form-control" id="" name="a3" placeholder="Antwoord 3">
-  </div>
+    <div id="vraag">
+        <div class="form-group">
+            <label for="gamequestion">Vraag 1 </label>
+            <input type="text" class="form-control" id="gamequestion" name="question_0" placeholder="Vraag 1">
+        </div>
+
+    @for (var i = 0; i < 3; i++)
+    {
+    @:<div class="form-group">
+    <label for="a@(i+1)">Antwoord @(i+1)  </label>
+    <input type="text" class="form-control " id="a@(i+1)" name="answer_@(i+1)" placeholder="Antwoord @(i+1)"/>
+        <div class="checkbox">
+         <label>   juiste antwoord
+        <input type="checkbox" name="correctAnswer_@(i+1)" />
+             </label>
+        </div>
+     @:</div>   
+        }
+    </div>
+
+
   <hr />
     <!-- Opslaan -->
   <button type="submit" class="btn btn-default">Opslaan</button>
     <!-- Ajax call opslaan en nieuwe vraag op het scherm zetten -->
-  <button type="submit" class="btn btn-default">Opslaan en nieuwe vraag</button>
+  <button type="" id="newQuestion" class="btn btn-default" onclick="AddQuestion()">Opslaan en nieuwe vraag</button>
 </form>
+
+
+<script>
+    $(function () // execute once the DOM has loaded
+    {
+        var count = 1;
+        // wire up Add Item button click event
+        $("#newQuestion").click(function (event) {
+            event.preventDefault();
+            count++;
+            var t1 = ['<div id="vraag">',
+                '<div class="form-group">',
+                '<label class="" for="">Vraag '+ count +'</label>',
+                '<input type="text" class="form-control"',
+                'id="gameName" name="gameName" placeholder="Vraag #">'
+            ];
+
+           
+                
+                     
+            $(t1.join('')).appendTo('#vraag');
+
+            for (var i = 1; i < 4; i++)
+            {
+                t2 = ['<div class="form-group">',
+                      '<label class="sr-only" for="">Antwoord '+ i +'  </label>',
+                      '<input type="text" class="form-control" id="" name="" placeholder="Antwoord ' + i + '"/>',
+                      '<input type="checkbox" name="" />',
+                      '</div>']
+                    $(t2.join('')).appendTo('#vraag');
+                }
+    
+        });
+
+    });
+
+</script>
