@@ -1,0 +1,145 @@
+﻿@model List<GymGame.Models.Round>
+@{
+    ViewBag.Title = "Start";
+    Layout = "~/Views/QuizMaster/_LayoutQuizMaster.cshtml";
+}
+
+<h2>Start</h2>
+
+@if(ViewBag.status != "error")
+{
+
+<table class="table">
+    <tbody>
+        @foreach (var r in Model)
+        {
+            int mins = r.Max_Time / 60;
+            if(r.Round_started != null)
+            {
+                DateTime maxTime = (DateTime)r.Round_started;
+                maxTime = maxTime.AddSeconds((double)r.Max_Time);
+                DateTime currentTime = DateTime.Now;
+                Boolean isActive = (r.Round_started <= currentTime && currentTime < maxTime);
+                <tr>
+                    <th>@r.Round_name</th>
+                    <td class="status">@(isActive ? "Gestart" : "Gestopt")
+                    </td>
+                    @if(isActive)
+                    {
+                        TimeSpan timeRem = (TimeSpan)(maxTime - DateTime.Now);
+                        String timeRemaining = Math.Round(timeRem.TotalSeconds).ToString();
+                        if(Math.Round(timeRem.TotalSeconds) > 60.1)
+                        {
+                            timeRemaining = Math.Round((Math.Round(timeRem.TotalSeconds) / 60)+1).ToString();
+                            <td class="duration" >Duur: Nog @timeRemaining Minuten</td>
+                        }
+                        else 
+                        {
+                            <td class="duration" >Duur: Nog @timeRemaining Seconden</td>
+                        }                        
+                    }
+                    else
+                    {
+                        <td class="duration" >Duur: <input type="text" value="@mins"  class="durationValue"  /> Minuten</td>
+                    }
+                    <td>@if (isActive)
+                        {
+                            <div class='btn btn-default startButton' data-roundid="@r.Round_Id">Stop</div>
+                        }
+                        else
+                        {
+                            <div class='btn btn-default startButton' data-roundid="@r.Round_Id">Start opnieuw</div>
+                        }
+                    </td>
+                    <td><a href="/leaderboard/quiz/@r.FK_Quiz" >Resultaten bekijken</a></td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <th>@r.Round_name</th>
+                    <td class="status">
+                        Nog niet gestart
+                    </td>
+                    <td class="duration" >Duur: <input type="text" value="@mins" class="durationValue"/> Minuten</td>
+                    <td>
+                        <div class='btn btn-default startButton' data-roundid="@r.Round_Id">Start</div>
+                    </td>
+                    <td><a href="/leaderboard/quiz/@r.FK_Quiz" >Resultaten bekijken</a></td>
+                </tr>
+            }
+            
+        }
+    </tbody>
+</table>
+<div id="feedback"></div>
+<script>
+    $(document).ready(function () {
+        $("div.startButton").click(function () {
+            //get the values
+            var roundId = $(this).data("roundid");
+            console.log("round id: "+roundId);
+
+            var action = $(this).text().substring(0, 5).toLowerCase();
+            console.log(action);
+
+            //get the duration
+            var durationContainer = $(this).parent().parent().children(".duration");
+            var durationField = durationContainer.children(".durationValue")
+            var duration = 0;
+            if (action == "start") {
+                duration = durationField.val();
+            }
+            console.log("duration: " + duration);
+            
+            var thisButton = $(this);
+
+            //do the ajax call
+            $.ajax({
+                type: "POST",
+                url: "/quizmaster/start",
+                dataType: 'json',
+                data: { roundId: roundId, action:action, duration: duration }
+            }).done(function (msg) {
+                console.log(msg);
+                if (msg.status == "success") {
+                    console.log("ok");
+                    //we can succeed
+                    var timeRem = msg.timeRemaining;
+                    var timeUnit = " Seconden";
+                    if (timeRem > 60) {
+                        timeRem = Math.round(timeRem / 60);
+                        timeUnit = " Minuten";
+                        console.log("minuten");
+                    }
+                    //reset the button and input values
+                    console.log($(this));
+                    if (action == "stop") {
+                        thisButton.html("Start opnieuw");
+                        $("#feedback").html("Quiz is gestopt").addClass("text-success");
+                        durationContainer.html("Duur: <input type='text' value='" + timeRem + "' class='durationValue'/> Minuten" );
+                    }
+                    else {
+                        thisButton.html("Stop");
+                        $("#feedback").html("Quiz is gestart").addClass("text-success");
+                        durationContainer.html("Duur: Nog "+ timeRem + timeUnit);
+                    }
+                    thisButton.parent().parent().children(".status").html(msg.current);
+                    
+                }
+                else {
+                    //try again
+                    console.log("there was an error: " + msg.status);
+                    $("#feedback").html("We konden je quiz niet starten...<br />Probeer aub opnieuw.").addClass("text-danger");
+                }
+            });
+
+        });
+    });
+</script>
+//end if (viewbag.status != error)
+}
+else 
+{
+    <p>We konden helaas geen quiz vinden...<br />Probeer opnieuw.</p>
+}

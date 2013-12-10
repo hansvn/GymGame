@@ -7,10 +7,12 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/style.css" rel="stylesheet" />
     <title>Login</title>
 </head>
 <body>
-    <div>
+    <div class="container">
 @{ if(ViewBag.status != "loggedIn" && ViewBag.status != "error")
    {
         <div id="fb-root"></div>
@@ -66,16 +68,26 @@
         ref.parentNode.insertBefore(js, ref);
     }(document));
 </script>
-        <div>
+        <div class="fbButton">
             <div class="fb-login-button" data-show-faces="true" data-width="400" data-max-rows="1"></div>
         </div>
 }
 else if (ViewBag.status == "error")
 {
-       <p>There was an error while logging in...</p>
+       <p>We konden je niet inloggen... <br />Probeer later nog eens.</p>
 }
 else {
-       <p>You are logged in :)</p>
+    // check if user is a quizmaster
+    if (Session["userLevel"].ToString() == "2") 
+    {
+        <nav>
+            <ul>
+                <li><a href="/quizmaster">Beheer je quizzen</a></li>
+            </ul>
+        </nav>
+    }
+       <p>Je bent ingelogd :)</p>
+       <a href="/game/index" class="btn btn-default">Play Time</a>
 }
 }
 

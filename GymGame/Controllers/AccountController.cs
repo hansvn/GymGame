@@ -24,7 +24,7 @@ namespace GymGame.Controllers
 
             //get name and id from facebookClient
             var client = new Facebook.FacebookClient(accessToken);
-            dynamic result = client.Get("me", new { fields = "first_name, last_name, id" });
+            dynamic result = client.Get("me", new { fields = "first_name, last_name, id, username" });
 
             //access the user model
             UserModel um = new UserModel();
@@ -35,6 +35,7 @@ namespace GymGame.Controllers
             u.Lastname = result.last_name;
             u.FK_Role = 1;
             u.FB_UserId = result.id;
+            u.FB_UserName = result.username;
             
             //important! fb id is now int 64,
             //but cannot convert dynamic result to int, so we use string (for now)
@@ -86,6 +87,7 @@ namespace GymGame.Controllers
             Session["fbUserId"] = result.id;
             Session["userId"] = u.User_Id;
             Session["fbUserId"] = result.id;
+            Session["userLevel"] = u.FK_Role;
             ViewBag.status = "loggedIn";
 
             return View();

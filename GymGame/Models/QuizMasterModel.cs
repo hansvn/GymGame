@@ -150,6 +150,54 @@ namespace GymGame.Models
             return result.Round_Id;
         }
 
+        public Round startRound(Round round)
+        {
+            //start de ronde
+            Round result = (from r in dc.Rounds
+                            where r.Round_Id == round.Round_Id
+                            select r).SingleOrDefault();
+
+            result.Round_started = DateTime.Now;
+            result.Max_Time = round.Max_Time;
+
+            //updaten in db
+            try
+            {
+                dc.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new Exception("Value couldn't be updated...");
+            }
+
+            return result;
+        }
+
+        public Round stopRound(Round round)
+        {
+            //stop de ronde
+            Round result = (from r in dc.Rounds
+                            where r.Round_Id == round.Round_Id
+                            select r).SingleOrDefault();
+
+            TimeSpan maxTime = (TimeSpan)(DateTime.Now - result.Round_started);
+            result.Max_Time = (int)maxTime.TotalSeconds;
+
+            //updaten in db
+            try
+            {
+                dc.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new Exception("Value couldn't be updated...");
+            }
+
+            return result;
+        }
+
         public int updateQuestion(Question question)
         {
             //query naar database om waarde te vinden
