@@ -150,6 +150,14 @@ namespace GymGame.Controllers
                 {
                     throw new Exception("roundId is not given");
                 }
+                if (f["roundId"] != null)
+                {
+                    result.FK_Round = int.Parse(f["roundId"]);
+                }
+                else
+                {
+                    throw new Exception("roundId is not given");
+                }
                 if (f["questionId"] != null)
                 {
                     result.FK_Question = int.Parse(f["questionId"]);
