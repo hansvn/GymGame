@@ -28,7 +28,7 @@ namespace GymGame.Controllers
         {
             return View();
         }
-        
+
         [HttpPost]
         public ActionResult New(FormCollection f)
         {
@@ -77,6 +77,8 @@ namespace GymGame.Controllers
 
 
 
+            //  Quiz q = new Quiz();
+            User u = new User();
             return View();
         }
 
@@ -246,7 +248,7 @@ namespace GymGame.Controllers
                     status = "success";
                 }
                 catch (Exception ex)
-                {
+        {
                     Console.WriteLine(ex);
                     status = "no round given";
                 }
