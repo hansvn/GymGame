@@ -38,7 +38,6 @@ namespace GymGame.Controllers
             // wegschrijven
 
 
-
             //  Quiz q = new Quiz();
             User u = new User();
             return View();
