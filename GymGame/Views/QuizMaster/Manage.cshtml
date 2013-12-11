@@ -1,4 +1,5 @@
-﻿@{
+﻿@model List<GymGame.Models.Quiz>
+@{
     ViewBag.Title = "Manage";
     Layout = "~/Views/QuizMaster/_LayoutQuizMaster.cshtml";
 }
@@ -6,12 +7,12 @@
 <h2>Beheer Games</h2>
 
 <ul>
-   @foreach (var l in ViewBag.quizzes)
+   @foreach (GymGame.Models.Quiz q in Model)
    { 
-    <li>Quiz: @l.Quiz_Id @l.name @l.Location @l.Date 
-       <input type="hidden" name="@l.Quiz_Id" />
-        <a href="~/Quizmaster/Edit/@l.Quiz_Id">Aanpassen</a>
-        <a href="~/Quizmaster/Delete/@l.Quiz_Id">Verwijder</a>
+    <li>Quiz: @q.Quiz_Id @q.name @q.Location @q.Date 
+       <input type="hidden" name="@q.Quiz_Id" />
+        <a href="~/Quizmaster/Edit/@q.Quiz_Id">Aanpassen</a>
+        <a href="~/Quizmaster/Delete/@q.Quiz_Id">Verwijder</a>
     </li>
    }
 

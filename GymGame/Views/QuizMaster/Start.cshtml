@@ -6,7 +6,7 @@
 
 <h2>Start</h2>
 
-@if(ViewBag.status != "error")
+@if(ViewBag.status != "error" && ViewBag.mode != "blank")
 {
 
 <table class="table">
@@ -139,7 +139,16 @@
 </script>
 //end if (viewbag.status != error)
 }
-else 
+//als er geen id werd meegegeven:
+else if(ViewBag.mode == "blank")
+{
+    foreach (GymGame.Models.Quiz q in ViewBag.links)
+    {
+        <a href="/quizmaster/start/@q.Quiz_Id">@q.name</a>
+        <br />
+    }
+}
+else
 {
     <p>We konden helaas geen quiz vinden...<br />Probeer opnieuw.</p>
 }

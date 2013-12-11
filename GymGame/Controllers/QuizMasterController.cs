@@ -13,11 +13,6 @@ namespace GymGame.Controllers
     {
         // This controller will handle backend features for administrators.
         // New quizes can be created and managed.
-        // GET: /QuizMaster/
-
-       
-        
-       
 
         public ActionResult Index()
         {
@@ -32,24 +27,26 @@ namespace GymGame.Controllers
         [HttpPost]
         public ActionResult New(FormCollection f)
         {
-            //GymGameModelDataContext dc = new GymGameModelDataContext();
-
-            // Session aanmaken om te makkelijker te testen
-            Session["userId"] = 1;
-
-
             // post alle velden uitlezen
-            // for (var i = 0; i < aantal; i++)
+
             QuizMasterModel qmm = new QuizMasterModel();
             Quiz quiz = new Quiz();
 
             quiz.name = f["quizName"];
             // code afleiden van de naam. Afkappen op max 6 tekens.
-            quiz.code = f["quizName"];
+            quiz.code = f["quizName"].ToUpper();
             quiz.Date = DateTime.Now;
             quiz.Location = f["gameLocation"];
             quiz.active = 1;
-            quiz.FK_Users = (int)Session["userId"];
+            if (Session["userId"] != null)
+            {
+                quiz.FK_Users = (int)Session["userId"];
+            }
+            else
+            {
+                //gebruiker is niet ingelogd: doorverwijzen naar account/login
+                Response.Redirect("~/account/login");
+            }
             var quizId = qmm.insertQuiz(quiz);
 
             // Ronde wordt voorlopig hardcoded aangemaakt.
@@ -60,25 +57,57 @@ namespace GymGame.Controllers
             round.Round_name = "Ronde 1";
             var roundId = qmm.insertRound(round);
             
-            //vragen doorlopen.
-            for (var i = 0; i < 1; i++)
+            //vragen doorlopen
+            Boolean keepRunning = true;
+            int q = 1;
+            while (keepRunning)
             {
-                Question question = new Question();
-                question.Question_Text = f["question_" + i];
-                question.FK_Round = roundId;
-                qmm.insertQuestion(question);
+                try
+                {
+                    String q_text = f["question_" + q];
+                }
+                catch (Exception e)
+                {
+                    //dit betekend dat we de laatste vraag hebben gehad...
+                    keepRunning = false;
+                }
+                try
+                {
+                    Question question = new Question();
+                    question.Question_Text = f["question_" + q];
+                    question.FK_Round = roundId;
+                    int q_id = qmm.insertQuestion(question);
+
+                    //over antwoorden loopen (q = vraag waar we momenteel aan bezig zijn
+                    for (int i = (((q - 1) * 3) + 1); i < ((((q - 1) * 3) + 1) + 3); i++)
+                    {
+                        Answer answer = new Answer();
+                        answer.Answer_Text = f["answer_" + i];
+                        answer.FK_Question = q_id;
+                        String answerValue = f["correctAnswer_" + i];
+                        if (answerValue != null && answerValue.Equals("on"))
+                        {
+                            answer.Answer_value = 1; 
+                        }
+                        else
+                        { 
+                            answer.Answer_value = 0; 
+                        }
+                        int checkInt = qmm.insertAnswer(answer);
+                    }
+                    ViewBag.status = "success";
+                }
+                catch (Exception e)
+                {
+                    //nu hebben we echt een fout...
+                    ViewBag.status = "er liep helaas iets fout...";
+                }
+
+                //count
+                q++;
+                
             }
 
-
-
-
-
-            
-
-
-
-            //  Quiz q = new Quiz();
-            User u = new User();
             return View();
         }
 
@@ -86,35 +115,70 @@ namespace GymGame.Controllers
 
         public ActionResult Manage()
         {
-            GymGameModelDataContext dc = new GymGameModelDataContext();
             // user komt normaal gezien uit de sessievar.
             User u = new User();
-            u.User_Id = 1;
+            if (Session["userId"] != null || (int)Session["userLevel"] < 2)
+            {
+                u.User_Id = (int)Session["userId"];
+            }
+            else
+            {
+                //gebruiker is niet ingelogd: doorverwijzen naar account/login
+                Response.Redirect("~/account/login");
+            }
             QuizMasterModel qmm = new QuizMasterModel();
             List<Quiz> Allquizzes = qmm.getAllQuizzes(u);
            
-            ViewBag.quizzes = Allquizzes;
-            return View();
+            return View(Allquizzes);
         }
 
 
-        public ActionResult Edit(String quiz_Id)
+        public ActionResult Edit(String id)
         {
             // alle velden van een bepaalde quiz opvragen.
             // en de velden hiermee vullen.
-           
-            //**** TO DO //
-            // hard coded omdat hij de waarde niet uit de url krijg
-            //PlayableQuiz plquiz = new PlayableQuiz(int.Parse(quiz_Id));
-           
-            var hardId = 1;
-            PlayableQuiz plquiz = new PlayableQuiz(hardId);
+            if (Session["userId"] == null || (int)Session["userLevel"] < 2)
+            {
+                //gebruiker is niet ingelogd of heeft geen rechten: doorverwijzen naar account/login
+                Response.Redirect("~/account/login");
+            }
 
-            ViewBag.name = plquiz.quiz.name;
-            ViewBag.countRounds = plquiz.quiz.Rounds.Count;
+            PlayableQuiz plQuiz = new PlayableQuiz();
+            //kijk of de quiz gegeven is, anders gaan we de status aanpassen naar "no quiz given"
+            int quizId;
+            try
+            {
+                quizId = int.Parse(id);
+                try
+                {
+                    plQuiz = new PlayableQuiz(quizId);
+                    ViewBag.status = "success";
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    ViewBag.status = "no quiz given";
+                }
+            }
+            catch (Exception e)
+            {
+                //als we hier terechtkomen is de id een code (bv. "abc")
+                try
+                {
+                    plQuiz = new PlayableQuiz(id);
+                    ViewBag.status = "success";
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    ViewBag.status = "no quiz given";
+                }
+            }
+
+            ViewBag.name = plQuiz.quiz.name;
+            ViewBag.countRounds = plQuiz.quiz.Rounds.Count;
             
-
-            return View(plquiz);
+            return View(plQuiz);
         }
 
         [HttpPost]
@@ -123,14 +187,12 @@ namespace GymGame.Controllers
             // al de data uit het form halen en indien nodig updaten in db.
             //in eerste fase alle data updaten in db.
             var form = Request.Form.AllKeys;
-             
-            
+
             foreach (var key in Request.Form.Keys)
             {
                 
             }
 
-            
             return View();
         }
 
@@ -147,22 +209,44 @@ namespace GymGame.Controllers
 
         public ActionResult Start(String id)
         {
-            List<Round> rounds = new List<Round>();
-
-            if (id != null)
+            User u = new User();
+            if (Session["userId"] != null) { u.User_Id = (int)Session["userId"]; }
+            else { Response.Redirect("~/account/login"); }
+            
+            //if id is null
+            if (id == null)
             {
-                GameModel gm = new GameModel();
-                Quiz quiz = selectQuiz(id);
-                rounds = gm.getAllRounds(quiz);
+                QuizMasterModel qmm = new QuizMasterModel();
+                List<Quiz> Allquizzes = qmm.getAllQuizzes(u);
 
-                // ronden in sessie zetten, zodat een gebruiker niet via javascript (jquery call) een andere quiz kan starten
-                Session["roundsManaging"] = rounds;
-                ViewBag.quizName = quiz.name;
-                ViewBag.status = "success";
+                ViewBag.links = Allquizzes;
+                ViewBag.mode = "blank";
+
+                return View();
             }
-            else { ViewBag.status = "error"; }
 
-            return View(rounds);
+
+            //else give the rounds:
+            else
+            {
+                List<Round> rounds = new List<Round>();
+
+                if (id != null)
+                {
+                    GameModel gm = new GameModel();
+                    Quiz quiz = selectQuiz(id);
+                    rounds = gm.getAllRounds(quiz);
+
+                    // ronden in sessie zetten, zodat een gebruiker niet via javascript (jquery call) een andere quiz kan starten
+                    Session["roundsManaging"] = rounds;
+                    ViewBag.quizName = quiz.name;
+                    ViewBag.mode = "given";
+                    ViewBag.status = "success";
+                }
+                else { ViewBag.status = "error"; }
+
+                return View(rounds);
+            }
         }
 
         [HttpPost]
