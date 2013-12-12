@@ -21,70 +21,98 @@ else
   <hr />
 
     <div id="vragen">
-        <div class="form-group">
-            <label for="question_1">Vraag 1 </label>
-            <input type="text" class="form-control" id="question_1" name="question_1" placeholder="Vraag 1">
-        </div>
+        <div class="vraag">
+            <div class="form-group">
+                <label for="question_1">Vraag 1 </label>
+                <input type="text" class="form-control" id="question_1" name="question_1" placeholder="Vraag 1">
+            </div>
     
-        <div class="form-group">
-        @for (var i = 0; i < 3; i++)
-        {
-        <label for="a@(i+1)">Antwoord @(i+1)  </label>
-        <input type="text" class="form-control " id="a@(i+1)" name="answer_@(i+1)" placeholder="Antwoord @(i+1)"/>
-            <div class="checkbox">
-                <label>   juiste antwoord?
-                    <input type="checkbox" name="correctAnswer_@(i+1)" />
-                </label>
-           </div>  
-        }
-        </div> 
+            <div class="form-group">
+            @for (var i = 0; i < 3; i++)
+            {
+            <label for="a@(i+1)">Antwoord @(i+1)  </label>
+            <input type="text" class="form-control " id="a@(i+1)" name="answer_@(i+1)" placeholder="Antwoord @(i+1)"/>
+                <div class="checkbox">
+                    <label>   juiste antwoord?
+                        <input type="checkbox" name="correctAnswer_@(i+1)" />
+                    </label>
+               </div>  
+            }
+            </div> 
+        </div>
+        <div class="vraag" id="newQuestion">
+            <button class="btn" type="button">
+                <img src="~/Content/addButton.png" alt="add Button" />
+                <strong>Vraag Toevoegen</strong>
+            </button>
+        </div>
     </div>
 
-
-  <hr />
     <!-- Opslaan -->
   <button type="submit" class="btn btn-default">Opslaan</button>
-    <!-- Ajax call opslaan en nieuwe vraag op het scherm zetten -->
-  <button type="" id="newQuestion" class="btn btn-default" >Opslaan en nieuwe vraag</button>
 </form>
 
 
 <script>
-    $(function () // execute once the DOM has loaded
-    {
+    $(document).ready( function (){
         var count = 1;
         // wire up Add Item button click event
-        $("#newQuestion").click(function (event) {
-            event.preventDefault();
-            count++;
-
-            var t0 = ['<hr />'];
-            $(t0.join('')).appendTo('#vragen');
-
-            var t1 = ['<div class="form-group">',
-                '<label class="" for="">Vraag '+ count +'</label>',
-                '<input type="text" class="form-control"',
-                'id="question_' + count + '" name="question_' + count + '" placeholder="Vraag ' + count + '"></div>'
-            ];
-                     
-            $(t1.join('')).appendTo('#vragen');
-
-            var t2 = ['<div class="form-group">'];
-            $(t2.join('')).appendTo('#vragen');
-
-            for (var i = 1; i < 4; i++)
-            {
-                var t3 = ['<label class="sr-only" for="answer_' + ((count - 1) * 3 + i) + '">Antwoord ' + i + '  </label>',
-                      '<input type="text" class="form-control" id="answer_' + ((count - 1) * 3 + i) + '" name="answer_' + ((count - 1) * 3 + i) + '" placeholder="Antwoord ' + i + '"/>',
-                      '<label><input type="checkbox" name="correctAnswer_' + ((count - 1) * 3 + i) + '" />   juiste antwoord? </label>']
-                $(t3.join('')).appendTo('#vragen');
-            }
-            t4 = ['</div>'];
-            $(t4.join('')).appendTo('#vragen');
-    
+        $("#newQuestion").click( function(evt)
+        {
+            addQuestion(evt, count);
         });
 
+        $(".checkbox input").bind("click", function (e) {
+            setCheckedColor(e, $(this));
+        });
     });
+
+    function addQuestion(event, count) {
+        event.preventDefault();
+        count++;
+
+        $("#newQuestion").remove();
+
+        var q = [];
+        var t1 = ['<div class="vraag">',
+            '<div class="form-group">',
+            '<label class="" for="">Vraag '+ count +'</label>',
+            '<input type="text" class="form-control"',
+            'id="question_' + count + '" name="question_' + count + '" placeholder="Vraag ' + count + '" /></div>'
+        ];
+
+        q = $.merge(q, t1);
+
+        var t2 = ['<div class="form-group">'];
+        q = $.merge(q, t2);
+
+        for (var i = 1; i < 4; i++)
+        {
+            var t3 = ['<label class="sr-only" for="answer_' + ((count - 1) * 3 + i) + '">Antwoord ' + i + '  </label>',
+                  '<input type="text" class="form-control" id="answer_' + ((count - 1) * 3 + i) + '" name="answer_' + ((count - 1) * 3 + i) + '" placeholder="Antwoord ' + i + '"/>',
+                  '<div class="checkbox"><label><input type="checkbox" name="correctAnswer_' + ((count - 1) * 3 + i) + '" />   juiste antwoord? </label></div>']
+            q = $.merge(q, t3);
+        }
+        var t4 = ['</div></div>',
+            '<div class="vraag" id="newQuestion"> <button class="btn" type="button"> <img src="/Content/addButton.png" alt="add Button" /> </button> </div>'];
+        q = $.merge(q, t4);
+        $(q.join('')).appendTo('#vragen');
+    
+        $("#newQuestion").click(function (evt) {
+            addQuestion(evt, count);
+        });
+
+        $(".checkbox input").unbind("click");
+        $(".checkbox input").click(function (e) {
+            setCheckedColor(e, $(this))
+        });
+
+        return (false);
+    };
+
+    function setCheckedColor(event, source) {
+        alert("ok");
+    };
 
 </script>
 }

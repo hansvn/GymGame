@@ -65,11 +65,17 @@ namespace GymGame.Controllers
                 try
                 {
                     String q_text = f["question_" + q];
+                    Console.WriteLine("question text: " + q_text);
+                    if (q_text.Equals(null))
+                    {
+                        throw new Exception("Er zijn geen vragen meer om opt te slaan");
+                    }
                 }
                 catch (Exception e)
                 {
                     //dit betekend dat we de laatste vraag hebben gehad...
                     keepRunning = false;
+                    break;
                 }
                 try
                 {
@@ -110,8 +116,6 @@ namespace GymGame.Controllers
 
             return View();
         }
-
-        
 
         public ActionResult Manage()
         {

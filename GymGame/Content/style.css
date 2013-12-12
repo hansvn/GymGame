@@ -38,6 +38,39 @@
 /* Einde stijl voor quizmaster/start */
 
 /* stijl voor quizmaster/new */
+.vragen {
+    overflow-x: auto;
+}
 
+.vraag {
+    border: 1px solid #dedede;
+    border-radius: 4px;
+    background-color: #efefef;
+    width: 30%;
+    display: inline-block;
+    margin: 1em;
+    padding: 1em;
+    overflow-x: auto;
+}
 
+#newQuestion {
+    max-width: 30% !important;
+    height: 100% !important;
+    padding: 0px 0px;
+}
+
+#newQuestion .btn {
+    width: 100%;
+    padding: 5em 0px;
+    background-color: none !important;
+}
+
+#newQuestion img {
+    width: 12,5em;
+}
+
+#newQuestion strong {
+    display: block;
+    color: #cdcdcd;
+}
 /* einde stijl voor quizmaster/new */
