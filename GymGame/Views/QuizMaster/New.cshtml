@@ -27,16 +27,18 @@ else
                 <input type="text" class="form-control" id="question_1" name="question_1" placeholder="Vraag 1">
             </div>
     
-            <div class="form-group">
+            <div class="answerSection">
             @for (var i = 0; i < 3; i++)
             {
-            <label for="a@(i+1)">Antwoord @(i+1)  </label>
-            <input type="text" class="form-control " id="a@(i+1)" name="answer_@(i+1)" placeholder="Antwoord @(i+1)"/>
-                <div class="checkbox">
-                    <label>   juiste antwoord?
-                        <input type="checkbox" name="correctAnswer_@(i+1)" />
-                    </label>
-               </div>  
+                <div class="form-group">
+                    <label for="a@(i+1)" class="control-label">Antwoord @(i+1)  </label>
+                    <input type="text" class="form-control" id="answer_@(i+1)" name="answer_@(i+1)" placeholder="Antwoord @(i+1)"/>
+                    <div class="checkbox">
+                        <label>   juiste antwoord?
+                            <input type="checkbox" name="correctAnswer_@(i+1)" />
+                        </label>
+                    </div>  
+                </div>
             }
             </div> 
         </div>
@@ -49,7 +51,7 @@ else
     </div>
 
     <!-- Opslaan -->
-  <button type="submit" class="btn btn-default">Opslaan</button>
+  <button type="submit" class="btn btn-default" id="submit">Opslaan</button>
 </form>
 
 
@@ -64,6 +66,12 @@ else
 
         $(".checkbox input").bind("click", function (e) {
             setCheckedColor(e, $(this));
+        });
+
+        // alle waarden controleren alvorens te posten
+        $("#submit").click( function(e) 
+        {
+            checkValues(e);
         });
     });
 
@@ -83,18 +91,20 @@ else
 
         q = $.merge(q, t1);
 
-        var t2 = ['<div class="form-group">'];
+        var t2 = ['<div class="answerSection">'];
         q = $.merge(q, t2);
 
         for (var i = 1; i < 4; i++)
         {
-            var t3 = ['<label class="sr-only" for="answer_' + ((count - 1) * 3 + i) + '">Antwoord ' + i + '  </label>',
+            var t3 = ['<div class="form-group">',
+                  '<label class="control-label" for="answer_' + ((count - 1) * 3 + i) + '">Antwoord ' + i + '  </label>',
                   '<input type="text" class="form-control" id="answer_' + ((count - 1) * 3 + i) + '" name="answer_' + ((count - 1) * 3 + i) + '" placeholder="Antwoord ' + i + '"/>',
-                  '<div class="checkbox"><label><input type="checkbox" name="correctAnswer_' + ((count - 1) * 3 + i) + '" />   juiste antwoord? </label></div>']
+                  '<div class="checkbox"><label><input type="checkbox" name="correctAnswer_' + ((count - 1) * 3 + i) + '" />   juiste antwoord? </label></div>',
+                  '</div>']
             q = $.merge(q, t3);
         }
         var t4 = ['</div></div>',
-            '<div class="vraag" id="newQuestion"> <button class="btn" type="button"> <img src="/Content/addButton.png" alt="add Button" /> </button> </div>'];
+            '<div class="vraag" id="newQuestion"> <button class="btn" type="button"> <img src="/Content/addButton.png" alt="add Button" /> <strong>Vraag Toevoegen</strong> </button> </div>'];
         q = $.merge(q, t4);
         $(q.join('')).appendTo('#vragen');
     
@@ -111,8 +121,91 @@ else
     };
 
     function setCheckedColor(event, source) {
-        alert("ok");
+        var inputId = source.attr("name").substring(14, source.attr("name").length);
+        console.log(inputId);
+
+        var checked = source.prop("checked");
+        //if checked: alle andere velden unchecken en input field groen maken
+        if (checked) {
+            //uncheck all others
+            source.parent().parent().parent().parent().children().each(function () {
+                // filter the value that mustn't be unchecked by name
+                var currentName = $(this).children(".checkbox").children().children("input").attr("name");
+                if (currentName != source.attr("name")) {
+                    $(this).children(".checkbox").children().children("input").prop("checked", false);
+                }
+
+                //remove the success class on all others
+                $(this).removeClass("has-success");
+                $(this).addClass("has-error");
+            });
+
+            //set green
+            source.parent().parent().parent().children("#answer_" + inputId).parent().removeClass("has-error");
+            source.parent().parent().parent().children("#answer_" + inputId).parent().addClass("has-success");
+        }
+        else {
+            source.parent().parent().parent().children("#answer_" + inputId).parent().removeClass("has-success");
+        }
+        
+
     };
 
+    function checkValues(event) {
+        var doBreak = false;
+        $(".form-control").each(function () {
+            if ($(this).val() == "") {
+                event.preventDefault();
+                alert("gelieve elke vraag in te vullen");
+                console.log($(this).attr("id")+" is niet ingevuld");
+
+                $(this).focus();
+
+                doBreak = true;
+                return false;
+            }
+        });
+        if (!doBreak) {
+            //eerst alle antwoorden halen
+            var answers = [];
+            $(".answerSection").each(function () {
+                $(this).children(".form-group").children(".checkbox").children().children("input").each(function () {
+                    if (!$(this).prop("checked")) {
+                        answers.push($(this).attr("name").substring(14, $(this).attr("name").length))
+                    }
+                });
+            });
+            for (var i = 1; i <= answers.length; i+=3) {
+                //er kan maar 1 van de drie antwoorden aangeduid zijn, dus filter daarop
+                //als een van de waarden gelijk is aan -1, zitten we goed
+                var needle = "" + i;
+                var checkOne = $.inArray(needle, answers);
+                console.log(needle);
+                console.log(checkOne);
+                needle = "" + (i + 1);
+                var checkTwo = $.inArray(needle, answers);
+                console.log(needle);
+                console.log(checkTwo);
+                needle = "" + (i + 2);
+                var checkThree = $.inArray(needle, answers);
+                console.log(needle);
+                console.log(checkThree);
+
+                if (checkOne == -1 || checkTwo == -1 || checkThree == -1) {
+                    console.log("alles is ok, post het formulier");
+                }
+                else {
+                    event.preventDefault();
+                    console.log(i + ": " + checkOne + (i + 1) + " : " + checkTwo + (i + 2) + " : " + checkThree);
+                    console.log(answers);
+                    alert("gelieve een correct antwoord aan te duiden");
+                    console.log("correctAnswer_" + answers[i] + " is niet ingevuld");
+
+                    return false;
+                }
+            }
+            
+        }
+    };
 </script>
 }

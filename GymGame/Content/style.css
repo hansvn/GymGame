@@ -73,4 +73,17 @@
     display: block;
     color: #cdcdcd;
 }
+
+.answerSection {
+    text-align: left;
+}
+
+.has-success input {
+    background-color: rgba(70, 136, 71, 0.1);
+}
+
+.form-group input {
+    color: black;
+    font-weight: 575;
+}
 /* einde stijl voor quizmaster/new */
