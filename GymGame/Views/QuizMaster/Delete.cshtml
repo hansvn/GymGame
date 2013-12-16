@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Verwijder quiz";
+    Layout = "~/Views/QuizMaster/_LayoutQuizMaster.cshtml";
+}
+
+<h2>Verwijderen</h2>
+
+<div id="feedback">@ViewBag.status</div>
+
+@if (ViewBag.statusCode == 1)
+{
+    <div id="undo">
+        <p>Foutje gemaakt?</p>
+        <a href="~/QuizMaster/Enable/@ViewBag.quizId">Ongedaan maken</a>
+    </div>
+}

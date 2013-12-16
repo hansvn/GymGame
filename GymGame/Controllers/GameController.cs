@@ -290,7 +290,6 @@ namespace GymGame.Controllers
 
             return View(results);
         }
-    
 
     }
 }

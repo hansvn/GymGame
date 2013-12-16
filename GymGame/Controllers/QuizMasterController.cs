@@ -27,8 +27,19 @@ namespace GymGame.Controllers
         [HttpPost]
         public ActionResult New(FormCollection f)
         {
-            // post alle velden uitlezen
+            //eerst kijken of de gebruiker de juiste rechten heeft
+            User u = new User();
+            if (Session["userId"] != null || (int)Session["userLevel"] < 2)
+            {
+                u.User_Id = (int)Session["userId"];
+            }
+            else
+            {
+                //gebruiker is niet ingelogd: doorverwijzen naar account/login
+                Response.Redirect("~/account/login");
+            }
 
+            // post alle velden uitlezen
             QuizMasterModel qmm = new QuizMasterModel();
             Quiz quiz = new Quiz();
 
@@ -136,7 +147,6 @@ namespace GymGame.Controllers
             return View(Allquizzes);
         }
 
-
         public ActionResult Edit(String id)
         {
             // alle velden van een bepaalde quiz opvragen.
@@ -188,6 +198,18 @@ namespace GymGame.Controllers
         [HttpPost]
         public ActionResult Save()
         {
+            //kijk of gebruiker de juiste rechten heeft
+            User u = new User();
+            if (Session["userId"] != null || (int)Session["userLevel"] < 2)
+            {
+                u.User_Id = (int)Session["userId"];
+            }
+            else
+            {
+                //gebruiker is niet ingelogd: doorverwijzen naar account/login
+                Response.Redirect("~/account/login");
+            }
+
             // al de data uit het form halen en indien nodig updaten in db.
             //in eerste fase alle data updaten in db.
             var form = Request.Form.AllKeys;
@@ -200,21 +222,95 @@ namespace GymGame.Controllers
             return View();
         }
 
-
-
-        // later uitwerken.
-        public String Delete(String quiz_Id)
+        public ActionResult Delete(String id)
         {
-            // uit datadank verwijderen, maar hoe? nog te voorzien. Op inactief zetten.
+            //kijk of gebruiker de jusite rechten heeft
+            User u = new User();
+            if (Session["userId"] != null || (int)Session["userLevel"] < 2)
+            {
+                u.User_Id = (int)Session["userId"];
+            }
+            else
+            {
+                //gebruiker is niet ingelogd: doorverwijzen naar account/login
+                Response.Redirect("~/account/login");
+            }
+
+            QuizMasterModel qmm = new QuizMasterModel();
+
+            Quiz q = new Quiz();
+            try
+            {
+                q.Quiz_Id = int.Parse(id);
+                q.active = 0;
+                try
+                {
+                    ViewBag.quizId = qmm.updateQuiz(q);
+                    ViewBag.status = "Quiz werd verwijderd";
+                    ViewBag.statusCode = 1;
+                }
+                catch (Exception e)
+                {
+                    ViewBag.status = "Quiz kon niet verwijderd worden";
+                    ViewBag.statusCode = 0;
+                }
+            }
+            catch (Exception e)
+            {
+                ViewBag.status = "Quiz kon niet verwijderd worden - foute parameter";
+                ViewBag.statusCode = 0;
+            }
            
-            return quiz_Id + " uit de databank verwijderd" + "<a href='/Quizmaster/manage'> terug </a>";
+            return View();
         }
 
+        public ActionResult Enable(String id)
+        {
+            //kijk of gebruiker de jusite rechten heeft
+            User u = new User();
+            if (Session["userId"] != null || (int)Session["userLevel"] < 2)
+            {
+                u.User_Id = (int)Session["userId"];
+            }
+            else
+            {
+                //gebruiker is niet ingelogd: doorverwijzen naar account/login
+                Response.Redirect("~/account/login");
+            }
+
+            QuizMasterModel qmm = new QuizMasterModel();
+
+            Quiz q = new Quiz();
+            try
+            {
+                q.Quiz_Id = int.Parse(id);
+                q.active = 1;
+                try
+                {
+                    ViewBag.quizId = qmm.updateQuiz(q);
+                    ViewBag.status = "Quiz werd terug gezet";
+                }
+                catch (Exception e)
+                {
+                    ViewBag.status = "Quiz kon niet terug gehaald worden";
+                }
+            }
+            catch (Exception e)
+            {
+                ViewBag.status = "Quiz kon niet terug gehaald worden - foute parameter";
+            }
+
+            return View();
+        }
 
         public ActionResult Start(String id)
         {
             User u = new User();
-            if (Session["userId"] != null) { u.User_Id = (int)Session["userId"]; }
+            //check if user has the rights
+            if (Session["userId"] != null || (int)Session["userLevel"] < 2)
+            {
+                u.User_Id = (int)Session["userId"];
+            }
             else { Response.Redirect("~/account/login"); }
             
             //if id is null
@@ -423,7 +519,7 @@ namespace GymGame.Controllers
                     status = "success";
                 }
                 catch (Exception ex)
-        {
+                {
                     Console.WriteLine(ex);
                     status = "no round given";
                 }

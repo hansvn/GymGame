@@ -106,9 +106,10 @@ namespace GymGame.Models
                           select q).Single();
 
             //veranderingen aanbrengen
-            if (quiz.FK_Users != null) result.FK_Users = quiz.FK_Users;
+            if (quiz.FK_Users != 0) result.FK_Users = quiz.FK_Users;
             if (quiz.Location != null) result.Location = quiz.Location;
-            if (quiz.Date != null) result.Date = quiz.Date;
+            if (quiz.Date > DateTime.MinValue) result.Date = quiz.Date;
+            if (quiz.active != null) result.active = quiz.active;
 
             //updaten in db
             try
@@ -267,7 +268,7 @@ namespace GymGame.Models
                 throw new Exception("User must be given...");
             }
             var result = (from q in dc.Quizs
-                          where q.FK_Users == u.User_Id
+                          where q.FK_Users == u.User_Id && q.active == 1
                           select q).ToList<Quiz>();
             return result;
         }
@@ -277,6 +278,10 @@ namespace GymGame.Models
             if (q == null)
             {
                 throw new Exception("Quiz must be given...");
+            }
+            else if (q.active == 0)
+            {
+                throw new Exception("Quiz isn't active...");
             }
             var result = (from round in dc.Rounds
                           where round.FK_Quiz == q.Quiz_Id

@@ -50,7 +50,6 @@ namespace GymGame.Models
         /**
          * --------------------------------------SELECT------------------------------------------*
          * select query's:
-         ** !!!!!!!!!!!!!!!!!! joins doen, anders komen er enkel enkele integers terug !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ** 
          **/
 
         public List<Result> getAllResults()
@@ -129,8 +128,12 @@ namespace GymGame.Models
             {
                 throw new Exception("Quiz must be given...");
             }
+            else if (quiz.active == 0)
+            {
+                throw new Exception("Quiz isn't active...");
+            }
             var result = (from q in dc.Quizs
-                          where q.Quiz_Id == quiz.Quiz_Id
+                          where q.Quiz_Id == quiz.Quiz_Id && q.active == 1
                           select q).SingleOrDefault();
             return (Quiz)result;
         }
@@ -141,8 +144,12 @@ namespace GymGame.Models
             {
                 throw new Exception("Quiz must be given...");
             }
+            else if (quiz.active == 0)
+            {
+                throw new Exception("Quiz isn't active...");
+            }
             var result = (from q in dc.Quizs
-                          where q.name == quiz.name
+                          where q.name == quiz.name && q.active == 1
                           select q).SingleOrDefault();
             return (Quiz)result;
         }
@@ -153,8 +160,12 @@ namespace GymGame.Models
             {
                 throw new Exception("Quiz must be given...");
             }
+            else if (quiz.active == 0)
+            {
+                throw new Exception("Quiz isn't active...");
+            }
             var result = (from q in dc.Quizs
-                          where q.code == quiz.code
+                          where q.code == quiz.code && q.active == 1
                           select q).SingleOrDefault();
             return (Quiz)result;
         }
